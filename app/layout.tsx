@@ -30,6 +30,28 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+
+
+        <head>
+        {/* Manifest */}
+        <link rel="manifest" href="/manifest.json" />
+
+        {/* Android */}
+        <meta name="mobile-web-app-capable" content="yes" />
+
+        {/* iOS */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="My_App_Bcv" />
+
+        {/* Iconos */}
+        <link rel="apple-touch-icon" href="/android-chrome-192x192.png" />
+        <link rel="icon" sizes="192x192" href="/android-chrome-192x192.png" />
+      </head>
+
+
+
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
