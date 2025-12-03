@@ -99,8 +99,8 @@ export default function Home() {
           loading="eager"
           className="mb-30 rounded-2xl w-50"
         />
-        <span>Fecha Actualizacion: {dataF.current.date}</span>
-        <span>Valor EurBcv:  {Math.round(dataF.current.eur*100)/100} Bs. </span>
+        <span className="text-white text-2xl">Fecha Actualizacion: {dataF.current.date}</span>
+        <span className="text-white text-2xl">Valor EurBcv:  {Math.round(dataF.current.eur*100)/100} Bs. </span>
    
         
             
@@ -119,14 +119,14 @@ export default function Home() {
             required
             {...register('cantidad')} />
 
-            <span> <RiMoneyDollarBoxFill size={40} /> </span>
+            <span> <RiMoneyDollarBoxFill size={40} className="text-white"/> </span>
           </div>
 
-          <button type="submit">Calcular</button>
+          <button className="text-white text-2xl" type="submit">Calcular</button>
           </div>
         </form>
 
-         <div className="bg-white text-black font-bold mt-20 w-60 shadow rounded-2xl text-center text-3xl"> {calculo} Bs. </div>
+         <div className="bg-white text-black py-4 font-bold mt-20 w-70 shadow rounded-2xl text-center text-3xl"> {calculo} Bs. </div>
 
 
 
