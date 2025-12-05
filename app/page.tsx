@@ -33,6 +33,14 @@ type FormData = {
   
 };
 
+const opcionesFormato = {
+    weekday: 'long', // Nombre completo del día de la semana (e.g., "viernes")
+    year: 'numeric', // Año completo (e.g., "2025")
+    month: 'long',   // Nombre completo del mes (e.g., "diciembre")
+    day: 'numeric'   // Número del día (e.g., "5")
+};
+
+
 export default function Home() {
 
    const [dataF, setDataF] = useState<Api | null>(null);
@@ -40,8 +48,9 @@ export default function Home() {
    const [error, setError] = useState(null);
    const [calculo, setCalculo] = useState<number>(0);
    const { register, handleSubmit, watch} = useForm<FormData>()
-   
    const cantidad_divisas = watch('cantidad'); 
+   const [fecha, setFecha] = useState<Date | null>(null);
+  
 
    const onSubmit = handleSubmit(async (data) => {
 
@@ -72,17 +81,22 @@ export default function Home() {
       };
 
       fetchData();
+
+      
     }, []); 
 
  useEffect(() => {
 
    if(dataF) setCalculo(  Math.round((cantidad_divisas*dataF?.current.eur)*100) /100   )
 
+   
 
    }, [cantidad_divisas]); 
     
     
-
+ useEffect(() => {
+   if(dataF) setFecha(  new Date(dataF?.current.date));
+   }, [dataF]); 
 
 
     return (
@@ -97,10 +111,20 @@ export default function Home() {
           width={200} 
           height={200} 
           loading="eager"
-          className="mb-30 rounded-2xl w-50"
+          className="mb-20 rounded-2xl w-50"
         />
-        <span className="text-white text-2xl">Fecha Actualizacion: {dataF.current.date}</span>
-        <span className="text-white text-2xl">Valor EurBcv:  {Math.round(dataF.current.eur*100)/100} Bs. </span>
+        <span className="text-white text-2xl">Fecha Actualizacion:</span>
+        
+         {fecha &&  <span className="text-white text-2xl">{fecha.toLocaleString('es-VE',{ 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })}</span> }
+        
+        
+        
+        <span className="text-white text-2xl mt-6">Valor EurBcv:  {Math.round(dataF.current.eur*100)/100} Bs. </span>
    
         
             
@@ -126,7 +150,10 @@ export default function Home() {
           </div>
         </form>
 
-         <div className="bg-white text-black py-4 font-bold mt-20 w-70 shadow rounded-2xl text-center text-3xl"> {calculo} Bs. </div>
+         <div className="bg-white text-black py-4 font-bold mt-20 w-70 shadow rounded-2xl text-center text-3xl"> {calculo.toLocaleString('es-VE', {
+    style: 'currency',
+    currency: 'VES' 
+}).replace(/Bs[\s\.]*S/, 'Bs')} </div>
 
 
 
