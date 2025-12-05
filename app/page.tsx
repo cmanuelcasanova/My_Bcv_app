@@ -115,7 +115,7 @@ export default function Home() {
         />
         <span className="text-white text-2xl">Fecha Actualizacion:</span>
         
-         {dataF &&  <span className="text-white text-2xl">{dataF.current.data}</span> }
+         {dataF &&  <span className="text-white text-2xl">{dataF.current.date}</span> }
         
         
         
