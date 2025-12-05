@@ -115,12 +115,7 @@ export default function Home() {
         />
         <span className="text-white text-2xl">Fecha Actualizacion:</span>
         
-         {fecha &&  <span className="text-white text-2xl">{fecha.toLocaleString('es-VE',{ 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-          })}</span> }
+         {dataF &&  <span className="text-white text-2xl">{dataF.current.data}</span> }
         
         
         
