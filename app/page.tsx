@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect , useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { RiMoneyDollarBoxFill } from "react-icons/ri";
+import Link from 'next/link';
 
 export interface Api {
   current: Current
@@ -111,20 +112,15 @@ export default function Home() {
           width={200} 
           height={200} 
           loading="eager"
-          className="mb-20 rounded-2xl w-50"
+          className="mb-10 rounded-2xl w-50 shadow"
         />
         <span className="text-white text-2xl">Fecha Actualizacion:</span>
         
-         {fecha &&  <span className="text-white text-2xl">{fecha.toLocaleString('es-VE',{ 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-          })}</span> }
+         {dataF &&  <span className="text-white text-2xl">{dataF.current.date}</span> }
         
         
         
-        <span className="text-white text-2xl mt-6">Valor EurBcv:  {Math.round(dataF.current.eur*100)/100} Bs. </span>
+        <span className="text-white text-2xl mt-6">Valor Bcv Euro €:  {Math.round(dataF.current.eur*100)/100} Bs. </span>
    
         
             
@@ -139,26 +135,35 @@ export default function Home() {
           <input 
             type="number" 
             pattern="[0-9]*" 
-            className="bg-white w-50 font-bold text-black text-2xl text-center rounded-2xl"
+            placeholder="Ingrese Divisa"
+            className="bg-white w-50 font-bold py-2 text-black text-2xl text-center rounded-2xl shadow-2xl"
             required
             {...register('cantidad')} />
 
-            <span> <RiMoneyDollarBoxFill size={40} className="text-white"/> </span>
+            <span> <RiMoneyDollarBoxFill size={55} className="text-white"/> </span>
           </div>
 
-          <button className="text-white text-2xl" type="submit">Calcular</button>
+          
           </div>
         </form>
 
-         <div className="bg-white text-black py-4 font-bold mt-20 w-70 shadow rounded-2xl text-center text-3xl"> {calculo.toLocaleString('es-VE', {
+         <div className="bg-white text-black py-4 font-bold mt-10 w-70 shadow rounded-2xl text-center text-3xl"> {calculo.toLocaleString('es-VE', {
     style: 'currency',
     currency: 'VES' 
 }).replace(/Bs[\s\.]*S/, 'Bs')} </div>
+
+      <p className="text-white mt-20">
+          <Link href="https://www.bcv.org.ve/"> Bcv pagina Oficial</Link> page.
+      </p>
+
 
 
 
      </div>
      }
+
+
+
     </div>
   );
 }
