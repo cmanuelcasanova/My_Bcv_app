@@ -34,7 +34,7 @@ export default function RootLayout({
 
         <head>
         {/* Manifest */}
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="manifest" href="/manifest.json?v=3" />
 
         {/* Android */}
         <meta name="mobile-web-app-capable" content="yes" />
