@@ -88,7 +88,7 @@ export default function Home() {
 
  useEffect(() => {
 
-   if(dataF) setCalculo(  Math.round((cantidad_divisas*dataF?.current.eur)*100) /100   )
+   if(dataF) setCalculo(  Math.round((cantidad_divisas*    Math.round(dataF?.current.eur*100)/100       )*100) /100   )
 
    
 
@@ -112,7 +112,7 @@ export default function Home() {
           width={200} 
           height={200} 
           loading="eager"
-          className="mb-10 rounded-2xl w-50 shadow"
+          className="mb-6 rounded-2xl w-50 shadow"
         />
         <span className="text-white text-2xl">Fecha Actualizacion:</span>
         
