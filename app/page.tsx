@@ -120,7 +120,7 @@ export default function Home() {
         
         
         
-        <span className="text-white text-2xl mt-6">Valor Bcv Euro €:  {Math.round(dataF.current.eur*100)/100} Bs. </span>
+        <span className="text-white text-2xl mt-6">Valor Bcv Euro €:  {dataF.current.eur.toFixed(2) } Bs. </span>
    
         
             
