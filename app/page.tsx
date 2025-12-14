@@ -30,7 +30,7 @@ interface ChangePercentage {
 }
 
 type FormData = {
-  cantidad: number;
+  cantidad: string;
   
 };
 
@@ -56,7 +56,7 @@ export default function Home() {
    const onSubmit = handleSubmit(async (data) => {
 
       
-      if(dataF) setCalculo(  Math.round((data.cantidad*dataF?.current.eur)*100) /100   )
+      //if(dataF) setCalculo(  Math.round((data.cantidad*dataF?.current.eur)*100) /100   )
 
    
 
@@ -88,8 +88,14 @@ export default function Home() {
 
  useEffect(() => {
 
-   if(dataF) setCalculo(  Math.round((cantidad_divisas*    Math.round(dataF?.current.eur*100)/100       )*100) /100   )
+   if(dataF) { 
+    
+    if(cantidad_divisas.length===0 || cantidad_divisas===',' || cantidad_divisas==='.'  ) {setCalculo(0)
 
+    }else{
+    setCalculo(  Math.round((parseFloat(cantidad_divisas.replace(',', '.'))*    Math.round(dataF?.current.eur*100)/100       )*100) /100   )
+    }
+  }
    
 
    }, [cantidad_divisas]); 
@@ -98,6 +104,7 @@ export default function Home() {
  useEffect(() => {
    if(dataF) setFecha(  new Date(dataF?.current.date));
    }, [dataF]); 
+
 
 
     return (
@@ -133,7 +140,9 @@ export default function Home() {
           
           <div className="flex flex-wrap items-center justify-center">
           <input 
-            type="number" 
+            type="text" 
+            inputMode="decimal" 
+            step="0.01"
             pattern="[0-9]*" 
             placeholder="Ingrese Divisa"
             className="bg-white w-50 font-bold py-2 text-black text-2xl text-center rounded-2xl shadow-2xl"
@@ -147,10 +156,17 @@ export default function Home() {
           </div>
         </form>
 
-         <div className="bg-white text-black py-4 font-bold mt-10 w-70 shadow rounded-2xl text-center text-3xl"> {calculo.toLocaleString('es-VE', {
-    style: 'currency',
-    currency: 'VES' 
-}).replace(/Bs[\s\.]*S/, 'Bs')} </div>
+         <div className="bg-white text-black py-4 font-bold mt-10 w-70 shadow rounded-2xl text-center text-3xl"> 
+          {calculo.toLocaleString('es-VE', {
+              style: 'currency',
+              currency: 'VES'}).replace(/Bs[\s\.]*S/, 'Bs')}
+         </div>
+
+
+            
+
+
+
 
       <p className="text-white mt-20">
           <Link href="https://www.bcv.org.ve/"> Bcv pagina Oficial</Link> page.
