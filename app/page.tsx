@@ -5,6 +5,19 @@ import { useEffect , useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { RiMoneyDollarBoxFill } from "react-icons/ri";
 import Link from 'next/link';
+import dayjs from 'dayjs';
+
+import weekday from 'dayjs/plugin/weekday';
+import localizedFormat from 'dayjs/plugin/localizedFormat'; 
+
+// Importar el idioma (Importación de efecto secundario)
+import 'dayjs/locale/es';
+
+
+dayjs.extend(weekday); 
+dayjs.extend(localizedFormat);// Extensión del plugin
+
+dayjs.locale('es');
 
 export interface Api {
   current: Current
@@ -44,6 +57,8 @@ const opcionesFormato = {
 
 export default function Home() {
 
+  
+
    const [dataF, setDataF] = useState<Api | null>(null);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(null);
@@ -51,7 +66,7 @@ export default function Home() {
    const { register, handleSubmit, watch} = useForm<FormData>()
    const cantidad_divisas = watch('cantidad'); 
    const [fecha, setFecha] = useState<Date | null>(null);
-  
+   const [dia, setDia] = useState<String | null>(null);
 
    const onSubmit = handleSubmit(async (data) => {
 
@@ -89,6 +104,8 @@ export default function Home() {
  useEffect(() => {
 
    if(dataF) { 
+
+    setDia(dayjs(dataF.current.date).format('dddd, L'))
     
     if(cantidad_divisas.length===0 || cantidad_divisas===',' || cantidad_divisas==='.'  ) {setCalculo(0)
 
@@ -119,12 +136,13 @@ export default function Home() {
           width={200} 
           height={200} 
           loading="eager"
-          className="mb-6 rounded-2xl w-50 shadow"
+          className="mb-6 rounded-2xl w-50 shadow h-50"
         />
-        <span className="text-white text-2xl">Fecha Actualizacion:</span>
+        <span className="text-white text-2xl mt-4">Fecha Actualizacion:</span>
         
-         {dataF &&  <span className="text-white text-2xl">{dataF.current.date}</span> }
+         {/*dataF &&  <span className="text-white text-2xl">{dataF.current.date}</span> */}
         
+        {dia &&  <span className="text-white text-2xl">{dia}</span>}
         
         
         <span className="text-white text-2xl mt-6">Valor Bcv Euro €:  {dataF.current.eur.toFixed(2) } Bs. </span>
