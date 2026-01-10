@@ -6,6 +6,8 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { RiMoneyDollarBoxFill } from "react-icons/ri";
 import Link from 'next/link';
 import dayjs from 'dayjs';
+import Switch from "react-switch";
+import { RiMoneyEuroBoxFill } from "react-icons/ri";
 
 import weekday from 'dayjs/plugin/weekday';
 import localizedFormat from 'dayjs/plugin/localizedFormat'; 
@@ -67,6 +69,11 @@ export default function Home() {
    const cantidad_divisas = watch('cantidad'); 
    const [fecha, setFecha] = useState<Date | null>(null);
    const [dia, setDia] = useState<String | null>(null);
+   const [checked, setChecked] = useState(false);
+    const handleChange = () => {
+    setChecked(prev => !prev);
+  };
+
 
    const onSubmit = handleSubmit(async (data) => {
 
@@ -110,19 +117,24 @@ export default function Home() {
     if(cantidad_divisas.length===0 || cantidad_divisas===',' || cantidad_divisas==='.'  ) {setCalculo(0)
 
     }else{
-    setCalculo(  Math.round((parseFloat(cantidad_divisas.replace(',', '.'))*    Math.round(dataF?.current.eur*100)/100       )*100) /100   )
-    }
+      if(checked){
+        setCalculo(  Math.round((parseFloat(cantidad_divisas.replace(',', '.'))*    Math.round(dataF?.current.usd*100)/100       )*100) /100   )
+      }else{
+        setCalculo(  Math.round((parseFloat(cantidad_divisas.replace(',', '.'))*    Math.round(dataF?.current.eur*100)/100       )*100) /100   )
+
+      }
+  
+  
+  }
   }
    
 
-   }, [cantidad_divisas]); 
+   }, [cantidad_divisas,checked]); 
     
     
  useEffect(() => {
    if(dataF) setFecha(  new Date(dataF?.current.date));
    }, [dataF]); 
-
-
 
     return (
     <div className="flex min-h-screen items-center justify-center bg-linear-to-b from-blue-950 via-blue-900 to-black">
@@ -138,6 +150,55 @@ export default function Home() {
           loading="eager"
           className="mb-6 rounded-2xl w-50 shadow h-50"
         />
+
+        
+         <Switch
+          onChange={handleChange}
+          checked={checked}
+          className="react-switch"
+
+      onColor="#1e8420"    
+  onHandleColor="#084f09"
+
+  offColor="#ffe5b4"   // Color de fondo cuando está en OFF (ej. rojo suave)
+  offHandleColor="#fecd07"
+
+          checkedIcon={
+          <div style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              height: "100%",
+              fontSize: 12,
+              color: "white",
+              paddingLeft: 8
+          }}>
+            USD
+          </div>
+
+        }
+         width={70}            
+  height={35}          
+  handleDiameter={22}
+
+           uncheckedIcon={
+          <div style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              height: "100%",
+              fontSize: 12,
+              color: "black",
+              paddingRight: 8
+          }}>
+            EUR
+          </div>
+        }
+
+        
+        />
+
+
         <span className="text-white text-2xl mt-4">Fecha Actualizacion:</span>
         
          {/*dataF &&  <span className="text-white text-2xl">{dataF.current.date}</span> */}
@@ -145,10 +206,15 @@ export default function Home() {
         {dia &&  <span className="text-white text-2xl">{dia}</span>}
         
         
-        <span className="text-white text-2xl mt-6">Valor Bcv Euro €:  {dataF.current.eur.toFixed(2) } Bs. </span>
+        <span className="text-white text-2xl mt-6">
+          
+          { checked ? `Valor Bcv Dolar $: ${dataF.current.usd.toFixed(2)}` :`Valor Bcv Euro €: ${dataF.current.eur.toFixed(2)}`   
+          }
+        </span>
    
         
             
+           
            
 
 
@@ -167,7 +233,7 @@ export default function Home() {
             required
             {...register('cantidad')} />
 
-            <span> <RiMoneyDollarBoxFill size={55} className="text-white"/> </span>
+            <span > { checked ? <RiMoneyDollarBoxFill size={55} className="text-white"/> : <RiMoneyEuroBoxFill size={55} className="text-white"/> }</span>
           </div>
 
           
