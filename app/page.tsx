@@ -252,7 +252,7 @@ export default function Home() {
 
          <div className="flex flex-wrap justify-center items-center mt-4">
 
-            <FaRegCopy />
+            <FaRegCopy className="text-white"/>
             <button 
               className=" text-white rounded-xl px-2"
               onClick={()=> {
