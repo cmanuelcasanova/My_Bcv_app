@@ -8,9 +8,10 @@ import Link from 'next/link';
 import dayjs from 'dayjs';
 import Switch from "react-switch";
 import { RiMoneyEuroBoxFill } from "react-icons/ri";
-
+import { FaRegCopy } from "react-icons/fa";
 import weekday from 'dayjs/plugin/weekday';
 import localizedFormat from 'dayjs/plugin/localizedFormat'; 
+import toast, { Toaster } from 'react-hot-toast';
 
 // Importar el idioma (Importación de efecto secundario)
 import 'dayjs/locale/es';
@@ -70,6 +71,7 @@ export default function Home() {
    const [fecha, setFecha] = useState<Date | null>(null);
    const [dia, setDia] = useState<String | null>(null);
    const [checked, setChecked] = useState(false);
+   const notify = () => toast('📋​ Copiado ✔️');
     const handleChange = () => {
     setChecked(prev => !prev);
   };
@@ -138,6 +140,8 @@ export default function Home() {
 
     return (
     <div className="flex min-h-screen items-center justify-center bg-linear-to-b from-blue-950 via-blue-900 to-black">
+    
+     
      {dataF && 
      
       <div className="flex flex-col items-center justify-center">
@@ -245,6 +249,24 @@ export default function Home() {
               style: 'currency',
               currency: 'VES'}).replace(/Bs[\s\.]*S/, 'Bs')}
          </div>
+
+         <div className="flex flex-wrap justify-center items-center mt-4">
+
+            <FaRegCopy />
+            <button 
+              className=" text-white rounded-xl px-2"
+              onClick={()=> {
+                navigator.clipboard.writeText(calculo.toLocaleString('es-VE', {
+              style: 'currency',
+              currency: 'VES'}).replace(/Bs[\s\.]*S/, 'Bs')) 
+              ; notify()}}> 
+              Copiar 
+              </button>
+
+         </div>
+
+
+        <Toaster />
 
 
             
