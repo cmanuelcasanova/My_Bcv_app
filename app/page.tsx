@@ -152,7 +152,7 @@ export default function Home() {
           width={200} 
           height={200} 
           loading="eager"
-          className="mb-6 rounded-2xl w-50 shadow h-50"
+          className="mb-6 rounded-2xl w-50 shadow h-50 mt-8"
         />
 
         
@@ -210,12 +210,16 @@ export default function Home() {
         {dia &&  <span className="text-white text-2xl">{dia}</span>}
         
         
-        <span className="text-white text-2xl mt-6">
+        <div className="text-white text-2xl mt-6">
           
-          { checked ? `Valor Bcv Dolar $: ${dataF.current.usd.toFixed(2)}` :`Valor Bcv Euro €: ${dataF.current.eur.toFixed(2)}`   
+          { checked ? 
+           <div> Valor Bcv Dolar:   <span className="font-extrabold text-3xl"> {dataF.current.usd.toFixed(2)} Bs. </span> </div>
+            :
+           <div> Valor Bcv Euro:   <span className="font-extrabold text-3xl"> {dataF.current.eur.toFixed(2)} Bs. </span>  </div> 
           }
-        </span>
+        </div>
    
+
         
             
            
@@ -233,7 +237,7 @@ export default function Home() {
             step="0.01"
             pattern="[0-9]*" 
             placeholder="Ingrese Divisa"
-            className="bg-white w-50 font-bold py-2 text-black text-2xl text-center rounded-2xl shadow-2xl"
+            className="bg-white w-60 font-bold py-2 text-black text-3xl text-center rounded-2xl shadow-2xl"
             required
             {...register('cantidad')} />
 
@@ -244,7 +248,7 @@ export default function Home() {
           </div>
         </form>
 
-         <div className="bg-white text-black py-4 font-bold mt-10 w-70 shadow rounded-2xl text-center text-3xl"> 
+         <div className="bg-white text-black py-4 font-bold mt-10 w-80 shadow rounded-2xl text-center text-4xl"> 
           {calculo.toLocaleString('es-VE', {
               style: 'currency',
               currency: 'VES'}).replace(/Bs[\s\.]*S/, 'Bs')}
