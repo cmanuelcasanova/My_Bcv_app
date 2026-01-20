@@ -278,8 +278,8 @@ export default function Home() {
 
 
 
-      <p className="text-white mt-20">
-          <Link href="https://www.bcv.org.ve/"> Bcv pagina Oficial</Link> page.
+      <p className="text-white mt-10">
+          <Link href="https://www.bcv.org.ve/"> 🌐 Pagina Oficial Bcv </Link>
       </p>
 
 
