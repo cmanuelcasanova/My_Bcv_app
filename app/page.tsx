@@ -92,7 +92,20 @@ export default function Home() {
  useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await fetch('https://api.dolarvzla.com/public/exchange-rate');
+          const response = await fetch('https://api.dolarvzla.com/public/exchange-rate',
+
+            {
+      method: 'GET',
+      headers: {
+      
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+
+        'x-dolarvzla-key': 'e8e35f291e052e221b2fa04381b34a895604b6f4142408b9f11c2ed32732b1fe'
+      }
+    }
+
+          );
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
