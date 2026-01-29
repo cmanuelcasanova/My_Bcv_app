@@ -15,6 +15,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { Api_Bcv } from "@/app/types/api_bcv"
 import 'dayjs/locale/es';
 import { MdOutlineError } from "react-icons/md";
+import LoadingModal from "./components/LoadingModal";
 
 
 dayjs.extend(weekday); 
@@ -122,6 +123,9 @@ const Formatear_Moneda = (i :Number): string => {
 }
 
 //if (!dataF ) return <BiMessageRoundedError size={50}/>;
+
+if(!dataF) return <LoadingModal/>
+
 
 if(error) return (
 
