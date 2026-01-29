@@ -12,57 +12,28 @@ import { FaRegCopy } from "react-icons/fa";
 import weekday from 'dayjs/plugin/weekday';
 import localizedFormat from 'dayjs/plugin/localizedFormat'; 
 import toast, { Toaster } from 'react-hot-toast';
-
-// Importar el idioma (Importación de efecto secundario)
+import { Api_Bcv } from "@/app/types/api_bcv"
 import 'dayjs/locale/es';
+import { BiMessageRoundedError } from "react-icons/bi";
 
 
 dayjs.extend(weekday); 
-dayjs.extend(localizedFormat);// Extensión del plugin
-
+dayjs.extend(localizedFormat);
 dayjs.locale('es');
 
-export interface Api {
-  current: Current
-  previous: Previous
-  changePercentage: ChangePercentage
-}
-
-interface Current {
-  usd: number
-  eur: number
-  date: string
-}
-
-interface Previous {
-  usd: number
-  eur: number
-  date: string
-}
-
-interface ChangePercentage {
-  usd: number
-  eur: number
-}
 
 type FormData = {
   cantidad: string;
   
 };
 
-const opcionesFormato = {
-    weekday: 'long', // Nombre completo del día de la semana (e.g., "viernes")
-    year: 'numeric', // Año completo (e.g., "2025")
-    month: 'long',   // Nombre completo del mes (e.g., "diciembre")
-    day: 'numeric'   // Número del día (e.g., "5")
-};
 
 
 export default function Home() {
 
   
 
-   const [dataF, setDataF] = useState<Api | null>(null);
+   const [dataF, setDataF] = useState<Api_Bcv | null >(null);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(null);
    const [calculo, setCalculo] = useState<number>(0);
@@ -77,6 +48,20 @@ export default function Home() {
   };
 
 
+  useEffect(() => {
+  const getData = async () => {
+    const response = await fetch('/api/api_bcv'); 
+    const data = await response.json();
+
+    if (data.status === 200) { setDataF(data.data); } else { setDataF(null);}
+    
+   
+  };
+
+  getData();
+}, []);
+
+
    const onSubmit = handleSubmit(async (data) => {
 
       
@@ -89,39 +74,6 @@ export default function Home() {
     
 
 
- useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await fetch('https://api.dolarvzla.com/public/exchange-rate',
-
-            {
-      method: 'GET',
-      headers: {
-      
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-
-        'x-dolarvzla-key': 'e8e35f291e052e221b2fa04381b34a895604b6f4142408b9f11c2ed32732b1fe'
-      }
-    }
-
-          );
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const result = await response.json();
-          setDataF(result);
-        } catch (error) {
-          console.log(error);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchData();
-
-      
-    }, []); 
 
  useEffect(() => {
 
@@ -151,6 +103,22 @@ export default function Home() {
    if(dataF) setFecha(  new Date(dataF?.current.date));
    }, [dataF]); 
 
+
+
+
+
+const Formatear_Moneda = (i :Number): string => {
+
+  return (i.toLocaleString('es-VE', {
+              style: 'currency',
+              currency: 'VES'}).replace(/Bs[\s\.]*S/, 'Bs'))
+
+}
+
+//if (!dataF ) return <BiMessageRoundedError size={50}/>;
+
+
+
     return (
     <div className="flex min-h-screen items-center justify-center bg-linear-to-b from-blue-950 via-blue-900 to-black">
     
@@ -170,35 +138,32 @@ export default function Home() {
 
         
          <Switch
-          onChange={handleChange}
-          checked={checked}
-          className="react-switch"
-
-      onColor="#1e8420"    
-  onHandleColor="#084f09"
-
-  offColor="#ffe5b4"   // Color de fondo cuando está en OFF (ej. rojo suave)
-  offHandleColor="#fecd07"
-
-          checkedIcon={
-          <div style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              height: "100%",
-              fontSize: 12,
-              color: "white",
-              paddingLeft: 8
-          }}>
-            USD
-          </div>
+            onChange={handleChange}
+            checked={checked}
+            className="react-switch"
+            onColor="#1e8420"    
+            onHandleColor="#084f09"
+            offColor="#ffe5b4"   
+            offHandleColor="#fecd07"  
+            checkedIcon={
+              <div style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                height: "100%",
+                fontSize: 12,
+                color: "white",
+                paddingLeft: 8
+                }}>
+                USD
+              </div>
 
         }
-         width={70}            
-  height={35}          
-  handleDiameter={22}
-
-           uncheckedIcon={
+        
+          width={70}            
+          height={35}          
+          handleDiameter={22}
+          uncheckedIcon={
           <div style={{
               display: "flex",
               justifyContent: "flex-end",
@@ -262,9 +227,9 @@ export default function Home() {
         </form>
 
          <div className="bg-white text-black py-4 font-bold mt-10 w-80 shadow rounded-2xl text-center text-4xl"> 
-          {calculo.toLocaleString('es-VE', {
-              style: 'currency',
-              currency: 'VES'}).replace(/Bs[\s\.]*S/, 'Bs')}
+          
+          { Formatear_Moneda(calculo) }
+          
          </div>
 
          <div className="flex flex-wrap justify-center items-center mt-4">
@@ -273,9 +238,7 @@ export default function Home() {
             <button 
               className=" text-white rounded-xl px-2"
               onClick={()=> {
-                navigator.clipboard.writeText(calculo.toLocaleString('es-VE', {
-              style: 'currency',
-              currency: 'VES'}).replace(/Bs[\s\.]*S/, 'Bs')) 
+                navigator.clipboard.writeText( Formatear_Moneda(calculo) ) 
               ; notify()}}> 
               Copiar 
               </button>
