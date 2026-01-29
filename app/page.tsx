@@ -14,7 +14,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import toast, { Toaster } from 'react-hot-toast';
 import { Api_Bcv } from "@/app/types/api_bcv"
 import 'dayjs/locale/es';
-import { BiMessageRoundedError } from "react-icons/bi";
+import { MdOutlineError } from "react-icons/md";
 
 
 dayjs.extend(weekday); 
@@ -35,7 +35,7 @@ export default function Home() {
 
    const [dataF, setDataF] = useState<Api_Bcv | null >(null);
    const [loading, setLoading] = useState(true);
-   const [error, setError] = useState(null);
+   const [error, setError] = useState<boolean>(false);
    const [calculo, setCalculo] = useState<number>(0);
    const { register, handleSubmit, watch} = useForm<FormData>()
    const cantidad_divisas = watch('cantidad'); 
@@ -43,7 +43,8 @@ export default function Home() {
    const [dia, setDia] = useState<String | null>(null);
    const [checked, setChecked] = useState(false);
    const notify = () => toast('📋​ Copiado ✔️');
-    const handleChange = () => {
+  
+   const handleChange = () => {
     setChecked(prev => !prev);
   };
 
@@ -53,7 +54,12 @@ export default function Home() {
     const response = await fetch('/api/api_bcv'); 
     const data = await response.json();
 
-    if (data.status === 200) { setDataF(data.data); } else { setDataF(null);}
+    if (data.status === 200) { setDataF(data.data); setError(false)
+
+    } else { 
+      setError(true)
+      setDataF(null);
+    }
     
    
   };
@@ -117,6 +123,24 @@ const Formatear_Moneda = (i :Number): string => {
 
 //if (!dataF ) return <BiMessageRoundedError size={50}/>;
 
+if(error) return (
+
+<div className=" h-screen flex flex-col justify-start items-center mt-20">
+
+  <div  className="flex flex-col justify-center items-center">
+     <Image 
+          src="/logobcv.png" 
+          alt="Picture of the author" 
+          width={200} 
+          height={200} 
+          loading="eager"
+          className="mb-6 rounded-2xl w-50 shadow h-50 mt-8"
+        />
+    <MdOutlineError  size={100}/>
+    <h1>Error en Consulta</h1>
+  </div>
+</div>
+)
 
 
     return (
