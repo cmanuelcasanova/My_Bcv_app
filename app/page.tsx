@@ -327,7 +327,7 @@ if(error) return (
             >
 
               <Image 
-              src="/Binance.jpg" 
+              src="/Binance.png" 
               alt="Picture of the author" 
               width={200} 
               height={200} 
@@ -337,11 +337,11 @@ if(error) return (
 
 
 
-              <h1 className="font-bold text-3xl">Compras</h1>
-             {Binance_Compras.map( (i, index_Compras) =>  <div key={index_Compras} className="bg-black w-70 h-10 rounded-2xl text-2xl text-orange-400 text-center font-bold mt-2"> {  (Math.round(Number(i)*100)/100*100 /100).toFixed(2)   } </div>    )     }
+              <h1 className="font-bold text-3xl text-white">Compras</h1>
+             {Binance_Compras.map( (i, index_Compras) =>  <div key={index_Compras} className="flex flex-col items-center justify-center bg-black w-70 h-10 rounded-2xl text-2xl text-orange-400 text-center font-bold mt-2">  <div>{  (Math.round(Number(i)*100)/100*100 /100).toFixed(2)   } Bs. </div> </div>    )     }
              
-              <h1 className="font-bold text-3xl">Ventas</h1>
-             {Binance_Ventas.map( (i, index_Ventas) =>  <div key={index_Ventas} className="bg-black w-70 h-10 rounded-2xl text-2xl text-orange-400  text-center font-bold mt-2"> { (Math.round(Number(i)*100)/100*100 /100).toFixed(2)  } </div>    )     }
+              <h1 className="font-bold text-3xl text-white">Ventas</h1>
+             {Binance_Ventas.map( (i, index_Ventas) =>  <div key={index_Ventas} className="flex flex-col items-center justify-center bg-black w-70 h-10 rounded-2xl text-2xl text-orange-400  text-center font-bold mt-2"> <div>{ (Math.round(Number(i)*100)/100*100 /100).toFixed(2)  } Bs. </div> </div>    )     }
              
 
               </div>
