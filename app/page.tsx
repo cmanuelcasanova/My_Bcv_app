@@ -12,10 +12,11 @@ import { FaRegCopy } from "react-icons/fa";
 import weekday from 'dayjs/plugin/weekday';
 import localizedFormat from 'dayjs/plugin/localizedFormat'; 
 import toast, { Toaster } from 'react-hot-toast';
-import { Api_Bcv } from "@/app/types/api_bcv"
+import { Api_Bcv , Consulta_Binance_Type } from "@/app/types/api_bcv"
 import 'dayjs/locale/es';
 import { MdOutlineError } from "react-icons/md";
 import LoadingModal from "./components/LoadingModal";
+import { SiBinance } from "react-icons/si";
 
 
 dayjs.extend(weekday); 
@@ -38,12 +39,16 @@ export default function Home() {
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<boolean>(false);
    const [calculo, setCalculo] = useState<number>(0);
+   const [Binance_Compras, setBinance_Compras] = useState<string[]>([]);
+   const [Binance_Ventas, setBinance_Ventas] = useState<string[]>([]);
    const { register, handleSubmit, watch} = useForm<FormData>()
    const cantidad_divisas = watch('cantidad'); 
    const [fecha, setFecha] = useState<Date | null>(null);
    const [dia, setDia] = useState<String | null>(null);
-   const [checked, setChecked] = useState(false);
+   const [checked, setChecked] = useState<boolean>(false);
+   const [Modal_Biance, setModalBinance] = useState<boolean>(false);
    const notify = () => toast('📋​ Copiado ✔️');
+
   
    const handleChange = () => {
     setChecked(prev => !prev);
@@ -121,6 +126,28 @@ const Formatear_Moneda = (i :Number): string => {
               currency: 'VES'}).replace(/Bs[\s\.]*S/, 'Bs'))
 
 }
+
+const consultar_binance = async () => {
+
+
+
+
+  
+    const response = await fetch('/api/api_binance'); 
+    const data : Consulta_Binance_Type = await response.json();
+
+    setBinance_Compras( data.Compra.map( i => i.adv.price)  ) 
+    setBinance_Ventas( data.Venta.map( i => i.adv.price)  ) 
+
+
+     
+
+    
+
+
+
+}
+
 
 //if (!dataF ) return <BiMessageRoundedError size={50}/>;
 
@@ -287,6 +314,38 @@ if(error) return (
       </p>
 
 
+      <SiBinance size={40} className="text-orange-400 my-10" onClick={()=> {consultar_binance(),  setModalBinance(true)}}/>
+
+       {Modal_Biance && (
+
+
+
+
+            <div 
+              className="fixed inset-0 bg-blue-950 flex flex-col items-center justify-center z-50"
+            onClick={()=>{setModalBinance(false)}}
+            >
+
+              <Image 
+              src="/Binance.jpg" 
+              alt="Picture of the author" 
+              width={200} 
+              height={200} 
+              loading="eager"
+              className="mb-2 rounded-2xl w-50 shadow h-30 mt-4"
+            />
+
+
+
+              <h1 className="font-bold text-3xl">Compras</h1>
+             {Binance_Compras.map( (i, index_Compras) =>  <div key={index_Compras} className="bg-black w-70 h-10 rounded-2xl text-2xl text-orange-400 text-center font-bold mt-2"> {  (Math.round(Number(i)*100)/100*100 /100).toFixed(2)   } </div>    )     }
+             
+              <h1 className="font-bold text-3xl">Ventas</h1>
+             {Binance_Ventas.map( (i, index_Ventas) =>  <div key={index_Ventas} className="bg-black w-70 h-10 rounded-2xl text-2xl text-orange-400  text-center font-bold mt-2"> { (Math.round(Number(i)*100)/100*100 /100).toFixed(2)  } </div>    )     }
+             
+
+              </div>
+              )}
 
 
      </div>
