@@ -8,13 +8,21 @@ export async function GET() {
     const response = await axios.get<Api_Bcv>('https://api.dolarvzla.com/public/exchange-rate',
 
       {
-        headers: {
+       headers: {
+        'Referer': 'https://www.dolarvzla.com/',
+        'Origin': 'https://www.dolarvzla.com/',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36...',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
+      
+      params: {
+        t: new Date().getTime() 
+      }
 
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-
-          'x-dolarvzla-key':  `${process.env.NEXT_PUBLIC_API_BCV}`
-        }
+          //'x-dolarvzla-key':  `${process.env.NEXT_PUBLIC_API_BCV}`
+        
 
       }
 
