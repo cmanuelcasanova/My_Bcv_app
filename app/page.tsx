@@ -327,7 +327,7 @@ if(error) return (
             >
 
               <Image 
-              src="/Binance.png" 
+              src="/binance.png" 
               alt="Picture of the author" 
               width={200} 
               height={200} 
