@@ -29,6 +29,12 @@ type FormData = {
   
 };
 
+type Data_Comerciante = {
+  precio: number;
+  precio_min: number
+  
+};
+
 
 
 export default function Home() {
@@ -39,8 +45,8 @@ export default function Home() {
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<boolean>(false);
    const [calculo, setCalculo] = useState<number>(0);
-   const [Binance_Compras, setBinance_Compras] = useState<string[]>([]);
-   const [Binance_Ventas, setBinance_Ventas] = useState<string[]>([]);
+   const [Binance_Compras, setBinance_Compras] = useState<Data_Comerciante[]>([]);
+   const [Binance_Ventas, setBinance_Ventas] = useState<Data_Comerciante[]>([]);
    const { register, handleSubmit, watch} = useForm<FormData>()
    const cantidad_divisas = watch('cantidad'); 
    const [fecha, setFecha] = useState<Date | null>(null);
@@ -133,11 +139,22 @@ const consultar_binance = async () => {
 
 
   
-    const response = await fetch('/api/api_binance'); 
+    const response = await fetch(`/api/api_binance?monto_minimo=${  dataF ? dataF.current.usd*30 : 0  }`); 
     const data : Consulta_Binance_Type = await response.json();
 
-    setBinance_Compras( data.Compra.map( i => i.adv.price)  ) 
-    setBinance_Ventas( data.Venta.map( i => i.adv.price)  ) 
+    
+
+    setBinance_Compras( data.Compra.map( 
+      i => {return {
+        precio: parseFloat(i.adv.price) , 
+        precio_min: parseFloat(i.adv.minSingleTransAmount)/parseFloat(i.adv.price)  
+      }}
+    )  ) 
+     setBinance_Ventas( data.Venta.map( 
+      i => {return {
+        precio: parseFloat(i.adv.price) ,
+        precio_min: parseFloat(i.adv.minSingleTransAmount)/parseFloat(i.adv.price)  }}
+    )  ) 
 
 
      
@@ -147,6 +164,8 @@ const consultar_binance = async () => {
 
 
 }
+
+
 
 
 //if (!dataF ) return <BiMessageRoundedError size={50}/>;
@@ -323,7 +342,7 @@ if(error) return (
 
             <div 
               className="fixed inset-0 bg-blue-950 flex flex-col items-center justify-center z-50"
-            onClick={()=>{setModalBinance(false)}}
+           
             >
 
               <Image 
@@ -332,18 +351,30 @@ if(error) return (
               width={200} 
               height={200} 
               loading="eager"
-              className="mb-2 rounded-2xl w-50 shadow h-30 mt-4"
+              className="mb-2 rounded-2xl shadow mt-4 h-15"
             />
 
 
+          <div className="flex flex-wrap justify-center items-center ">
+            
+            <div className="flex flex-col justify-center items-center w-45 mr-2">
+                
+                <h1 className="font-bold text-3xl text-white">Compras</h1>
+                {Binance_Compras.map( (i, index_Compras) =>  <div key={index_Compras} className="w-40 flex flex-col items-center justify-center bg-black h-14 rounded-2xl text-2xl text-orange-400 text-center font-bold mt-1">  <div>{  i.precio.toFixed(2)   } Bs. </div> <span className="text-sm text-white"> Min: {i.precio_min.toFixed(2)} Usdt </span></div>     )     }
+            
+            </div>
 
-              <h1 className="font-bold text-3xl text-white">Compras</h1>
-             {Binance_Compras.map( (i, index_Compras) =>  <div key={index_Compras} className="flex flex-col items-center justify-center bg-black w-70 h-10 rounded-2xl text-2xl text-orange-400 text-center font-bold mt-2">  <div>{  (Math.round(Number(i)*100)/100*100 /100).toFixed(2)   } Bs. </div> </div>    )     }
+           <div className="flex flex-col justify-center items-center w-45 ml-2">
              
-              <h1 className="font-bold text-3xl text-white">Ventas</h1>
-             {Binance_Ventas.map( (i, index_Ventas) =>  <div key={index_Ventas} className="flex flex-col items-center justify-center bg-black w-70 h-10 rounded-2xl text-2xl text-orange-400  text-center font-bold mt-2"> <div>{ (Math.round(Number(i)*100)/100*100 /100).toFixed(2)  } Bs. </div> </div>    )     }
-             
+             <h1 className="font-bold text-3xl text-white">Ventas</h1>
+             {Binance_Ventas.map( (i, index_Ventas) =>  <div key={index_Ventas} className="w-40 flex flex-col items-center justify-center bg-black h-14 rounded-2xl text-2xl text-orange-400  text-center font-bold mt-1"> <div>{ i.precio.toFixed(2)  } Bs. </div> <span className="text-sm text-white"> Min: {i.precio_min.toFixed(2)} Usdt </span>  </div>    )     }
+                 
+            </div>
 
+            </div>
+              <button 
+                className="bg-white shadow-2xl p-2 my-2 rounded-xl text-black font-bold"
+                onClick={()=>{setModalBinance(false)}}> Cerrar </button>
               </div>
               )}
 

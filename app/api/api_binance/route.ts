@@ -1,8 +1,11 @@
-import { NextResponse } from 'next/server';
+import {NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 import { BinanceP2PResponse } from '@/app/types/api_bcv'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+
+  const { searchParams } = new URL(request.url);
+  const monto_minimo = searchParams.get('monto_minimo') || "0";
 
   try {
    const response_Sell = await axios.post<BinanceP2PResponse>(
@@ -12,9 +15,10 @@ export async function GET() {
     fiat: "VES",
     merchantCheck: true,
     page: 1,               
-    rows: 5,
+    rows: 10,
     payTypes: [],          
     publisherType: "merchant", 
+    transAmount: monto_minimo,
     tradeType: 'SELL' 
   },
   {
@@ -32,9 +36,10 @@ const response_Buy = await axios.post<BinanceP2PResponse>(
     fiat: "VES",
     merchantCheck: true,
     page: 1,               
-    rows: 5,
+    rows: 10,
     payTypes: [],          
     publisherType: "merchant", 
+    transAmount: monto_minimo,
     tradeType: 'BUY' 
   },
   {
