@@ -357,17 +357,17 @@ if(error) return (
 
           <div className="flex flex-wrap justify-center items-center ">
             
-            <div className="flex flex-col justify-center items-center w-45 mr-2">
+            <div className="flex flex-col justify-center items-center w-40 mr-2">
                 
                 <h1 className="font-bold text-3xl text-white">Compras</h1>
-                {Binance_Compras.map( (i, index_Compras) =>  <div key={index_Compras} className="w-40 flex flex-col items-center justify-center bg-black h-14 rounded-2xl text-2xl text-orange-400 text-center font-bold mt-1">  <div>{  i.precio.toFixed(2)   } Bs. </div> <span className="text-sm text-white"> Min: {i.precio_min.toFixed(2)} Usdt </span></div>     )     }
+                {Binance_Compras.map( (i, index_Compras) =>  <div key={index_Compras} className="w-35 flex flex-col items-center justify-center bg-black h-14 rounded-2xl text-2xl text-orange-400 text-center font-bold mt-1">  <div>{  i.precio.toFixed(2)   } Bs. </div> <span className="text-sm text-white"> Min: {i.precio_min.toFixed(2)} Usdt </span></div>     )     }
             
             </div>
 
-           <div className="flex flex-col justify-center items-center w-45 ml-2">
+           <div className="flex flex-col justify-center items-center w-40 ml-2">
              
              <h1 className="font-bold text-3xl text-white">Ventas</h1>
-             {Binance_Ventas.map( (i, index_Ventas) =>  <div key={index_Ventas} className="w-40 flex flex-col items-center justify-center bg-black h-14 rounded-2xl text-2xl text-orange-400  text-center font-bold mt-1"> <div>{ i.precio.toFixed(2)  } Bs. </div> <span className="text-sm text-white"> Min: {i.precio_min.toFixed(2)} Usdt </span>  </div>    )     }
+             {Binance_Ventas.map( (i, index_Ventas) =>  <div key={index_Ventas} className="w-35 flex flex-col items-center justify-center bg-black h-14 rounded-2xl text-2xl text-orange-400  text-center font-bold mt-1"> <div>{ i.precio.toFixed(2)  } Bs. </div> <span className="text-sm text-white"> Min: {i.precio_min.toFixed(2)} Usdt </span>  </div>    )     }
                  
             </div>
 
