@@ -170,7 +170,8 @@ const consultar_binance = async () => {
 
 //if (!dataF ) return <BiMessageRoundedError size={50}/>;
 
-if(!dataF) return <LoadingModal/>
+if(!dataF) return <LoadingModal color={"#0b1493"}/>
+if(Modal_Biance && !Binance_Ventas.length ) return <LoadingModal color={"#ff8903"}/>
 
 
 if(error) return (
