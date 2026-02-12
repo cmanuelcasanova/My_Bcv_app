@@ -1,6 +1,7 @@
 'use client'
 
 import Image from "next/image";
+import { useSearchParams } from 'next/navigation'
 import { useEffect , useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { RiMoneyDollarBoxFill } from "react-icons/ri";
@@ -51,15 +52,21 @@ export default function Home() {
    const cantidad_divisas = watch('cantidad'); 
    const [fecha, setFecha] = useState<Date | null>(null);
    const [dia, setDia] = useState<String | null>(null);
+   const searchParams = useSearchParams()
    const [checked, setChecked] = useState<boolean>(false);
    const [Modal_Biance, setModalBinance] = useState<boolean>(false);
    const notify = () => toast('📋​ Copiado ✔️');
+   const option = searchParams.get('option')
 
   
    const handleChange = () => {
     setChecked(prev => !prev);
   };
 
+   useEffect(() => {
+   if(option==="1") setChecked(true);
+   }, [option]); 
+   
 
   useEffect(() => {
   const getData = async () => {
