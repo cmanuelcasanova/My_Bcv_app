@@ -63,11 +63,15 @@ export default function Home() {
     setChecked(prev => !prev);
   };
 
-  /*
+  
    useEffect(() => {
+
+    const params = new URLSearchParams(window.location.search)
+    const option = params.get('option')
+
    if(option==="1") setChecked(true);
-   }, [option]); 
-   */
+   }, []); 
+   
 
   useEffect(() => {
   const getData = async () => {
