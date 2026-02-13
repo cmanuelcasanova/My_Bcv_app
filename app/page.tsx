@@ -262,7 +262,7 @@ if(error) return (
         />
         }
         {menu && 
-          <div className="bg-blue-950 w-full inset-x-0 top-full h-40 p-4 pt-4">
+          <div className="bg-blue-950 w-full inset-x-0 top-full h-40 p-4 pt-4 text-white font-bold">
 
           Moneda por Defecto: 
 
