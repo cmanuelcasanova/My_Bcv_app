@@ -1,6 +1,7 @@
 {
     "theme_color":"#172556",
     "background_color":"#FFFFFF",
+    "start_url": "/",
     "icons":[{
         "purpose":"maskable",
         "sizes":"512x512",

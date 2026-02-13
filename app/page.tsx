@@ -18,6 +18,10 @@ import 'dayjs/locale/es';
 import { MdOutlineError } from "react-icons/md";
 import LoadingModal from "./components/LoadingModal";
 import { SiBinance } from "react-icons/si";
+import { IoSettingsOutline } from "react-icons/io5";
+import { CiMenuKebab } from "react-icons/ci";
+import { IoMenu } from "react-icons/io5";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 
 dayjs.extend(weekday); 
@@ -54,22 +58,48 @@ export default function Home() {
    const [dia, setDia] = useState<String | null>(null);
    //const searchParams = useSearchParams()
    const [checked, setChecked] = useState<boolean>(false);
+   const [prede, setPrede] = useState<boolean>(false);
    const [Modal_Biance, setModalBinance] = useState<boolean>(false);
    const notify = () => toast('📋​ Copiado ✔️');
    //const option = searchParams.get('option')
+   const [menu, setMenu] = useState<Boolean>(false);
 
   
-   const handleChange = () => {
+  const handleChange = () => {
     setChecked(prev => !prev);
   };
+
+  const handleChangePrede = () => {
+    setPrede(prev => {
+      if (prev===true) localStorage.setItem("Default","2") 
+      if (prev===false) localStorage.setItem("Default","1")   
+      return !prev
+    });
+  };
+
 
   
    useEffect(() => {
 
-    const params = new URLSearchParams(window.location.search)
-    const option = params.get('option')
+    if (typeof window !== 'undefined') {
 
-   if(option==="1") setChecked(true);
+      if(localStorage.getItem("Default")===null){
+
+        console.log("Entro")
+        localStorage.setItem("Default","1")
+        setPrede(true)
+        setChecked(true)
+      }else{
+
+        if (localStorage.getItem("Default")==="1") {setPrede(true), setChecked(true)}
+        if (localStorage.getItem("Default")==="2") {setPrede(false),setChecked(false) }
+
+      }
+
+    }
+    
+
+
    }, []); 
    
 
@@ -178,9 +208,10 @@ const consultar_binance = async () => {
 }
 
 
-
-
 //if (!dataF ) return <BiMessageRoundedError size={50}/>;
+
+
+
 
 if(!dataF) return <LoadingModal color={"#0b1493"}/>
 if(Modal_Biance && !Binance_Ventas.length ) return <LoadingModal color={"#ff8903"}/>
@@ -206,21 +237,91 @@ if(error) return (
 )
 
 
+
+
     return (
     <div className="flex min-h-screen items-center justify-center bg-linear-to-b from-blue-950 via-blue-900 to-black">
     
      
      {dataF && 
      
-      <div className="flex flex-col items-center justify-center">
-  
+      <div className="flex flex-col items-center justify-center w-full">
+
+        {!menu ?
+          <IoMenu 
+          size={40} 
+          onClick={ ()=> setMenu(prev => !prev) } 
+          className="text-white mr-auto mt-2 ml-4"
+        />
+        :
+        <IoIosCloseCircleOutline 
+         size={40} 
+          onClick={ ()=> setMenu(prev => !prev) } 
+          className="text-white mr-auto mt-2 ml-4"
+        
+        />
+        }
+        {menu && 
+          <div className="bg-blue-950 w-full inset-x-0 top-full h-40 p-4 pt-4">
+
+          Moneda por Defecto: 
+
+           <Switch
+            onChange={handleChangePrede}
+            checked={prede}
+            className="react-switch ml-4"
+            onColor="#1e8420"    
+            onHandleColor="#084f09"
+            offColor="#ffe5b4"   
+            offHandleColor="#fecd07"  
+            checkedIcon={
+              <div style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                height: "100%",
+                fontSize: 12,
+                color: "white",
+                paddingLeft: 8
+                }}>
+                USD
+              </div>
+
+        }
+        
+          width={70}            
+          height={35}          
+          handleDiameter={22}
+          uncheckedIcon={
+          <div style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              height: "100%",
+              fontSize: 12,
+              color: "black",
+              paddingRight: 8
+          }}>
+            EUR
+          </div>
+          }
+          ></Switch>
+
+
+          </div>
+
+
+
+
+
+        }
         <Image 
           src="/logobcv.png" 
           alt="Picture of the author" 
           width={200} 
           height={200} 
           loading="eager"
-          className="mb-6 rounded-2xl w-50 shadow h-50 mt-8"
+          className="mb-6 rounded-2xl w-40 shadow h-40 mt-8"
         />
 
         
@@ -348,7 +449,8 @@ if(error) return (
 
       <SiBinance size={40} className="text-orange-400 my-10" onClick={()=> {consultar_binance(),  setModalBinance(true)}}/>
 
- 
+
+      
        {Modal_Biance && (
 
 
