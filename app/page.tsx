@@ -22,6 +22,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { CiMenuKebab } from "react-icons/ci";
 import { IoMenu } from "react-icons/io5";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { IoIosInformationCircle } from "react-icons/io";
 
 
 dayjs.extend(weekday); 
@@ -47,6 +48,7 @@ export default function Home() {
   
 
    const [dataF, setDataF] = useState<Api_Bcv | null >(null);
+   const [Api_Response, setApiResponse] = useState< Number >();
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<boolean>(false);
    const [calculo, setCalculo] = useState<number>(0);
@@ -85,7 +87,7 @@ export default function Home() {
 
       if(localStorage.getItem("Default")===null){
 
-        console.log("Entro")
+    
         localStorage.setItem("Default","1")
         setPrede(true)
         setChecked(true)
@@ -108,7 +110,7 @@ export default function Home() {
     const response = await fetch('/api/api_bcv'); 
     const data = await response.json();
 
-    if (data.status === 200) { setDataF(data.data); setError(false)
+    if (data.status === 200) { setDataF(data.data); setError(false); setApiResponse(data.api)
 
     } else { 
       setError(true)
@@ -373,8 +375,10 @@ if(error) return (
         
          {/*dataF &&  <span className="text-white text-2xl">{dataF.current.date}</span> */}
         
+        <div className="flex flex-wrap items-center justify-center gap-2">
+        <IoIosInformationCircle className={ Api_Response===1 ? ` text-green-500` : `text-white`} size={20}/>
         {dia &&  <span className="text-white text-2xl">{dia}</span>}
-        
+        </div>
         
         <div className="text-white text-2xl mt-6">
           
