@@ -141,7 +141,11 @@ export default function Home() {
 
    if(dataF) { 
 
+    if(Api_Response===2){
     setDia(dayjs(dataF.current.date).format('dddd, L'))
+    }else{
+      setDia(dataF.current.date)
+    }
     
     if(cantidad_divisas.length===0 || cantidad_divisas===',' || cantidad_divisas==='.'  ) {setCalculo(0)
 

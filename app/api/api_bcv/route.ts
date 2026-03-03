@@ -5,7 +5,7 @@ import https from 'https';
 import * as cheerio from 'cheerio';
 
 
-export const revalidate = 60;
+//export const revalidate = 60;
 
 const userAgents = [
   // --- MÓVILES (iOS) ---
@@ -93,6 +93,10 @@ try {
 
     return NextResponse.json({status: 200 , data : myScrapt , api: 1});
  
+     } else {
+
+      throw("")
+
      }
 
     }catch {
