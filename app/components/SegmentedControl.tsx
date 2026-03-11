@@ -1,0 +1,41 @@
+"use client";
+
+import * as Tabs from "@radix-ui/react-tabs";
+import { useState } from "react";
+import { useStore } from "@/app/store/useSection";
+export default function SegmentedControl() {
+
+ 
+  const setOption = useStore( (store) =>  store.setOption  )
+
+  const handleValueChange = (value: string) => {
+    setOption(value);
+  };
+
+  return (
+    <Tabs.Root
+      onValueChange={handleValueChange}
+      defaultValue="tab1"
+      className="flex flex-col w-80"
+    >
+      <Tabs.List className="flex p-1 bg-gray-100 rounded-xl bg-opacity-80">
+        <Tabs.Trigger
+          value="1"
+          className="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all 
+                     data-[state=active]:bg-white data-[state=active]:shadow-sm 
+                     data-[state=active]:text-black text-gray-500"
+        >
+          Bcv Dolar
+        </Tabs.Trigger>
+        <Tabs.Trigger
+          value="2"
+          className="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all 
+                     data-[state=active]:bg-white data-[state=active]:shadow-sm 
+                     data-[state=active]:text-black text-gray-500"
+        >
+          Binance
+        </Tabs.Trigger>
+      </Tabs.List>
+    </Tabs.Root>
+  );
+}
