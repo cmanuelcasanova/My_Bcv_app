@@ -240,7 +240,7 @@ export default function Binance() {
               </div>
             </form>
 
-            <div className="flex flex-col items-center justify-center"> 
+            <div className="flex flex-col items-center justify-center text-white"> 
             
             <span>Aprox. {(calculo/store.Dolar).toFixed(2)} Dolar Bcv</span>  
             <span>Aprox. {(calculo/store.Euro).toFixed(2)} Euro Bcv      </span>
