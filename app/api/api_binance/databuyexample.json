@@ -1,0 +1,12 @@
+{
+  "code": "000000",
+  "data": [
+    { "adv": { "price": "36.52", "surplusAmount": "1200.00", "minSingleTransAmount": "500.00" }, "advertiser": { "nickName": "CriptoVzla_Top", "monthOrderCount": 450, "monthFinishRate": 0.99 } },
+    { "adv": { "price": "36.53", "surplusAmount": "500.00", "minSingleTransAmount": "200.00" }, "advertiser": { "nickName": "RapidCambio", "monthOrderCount": 120, "monthFinishRate": 0.95 } },
+    { "adv": { "price": "36.55", "surplusAmount": "3000.00", "minSingleTransAmount": "1000.00" }, "advertiser": { "nickName": "BolivaresDigital", "monthOrderCount": 890, "monthFinishRate": 1.00 } },
+    { "adv": { "price": "36.58", "surplusAmount": "150.00", "minSingleTransAmount": "100.00" }, "advertiser": { "nickName": "P2P_Master", "monthOrderCount": 35, "monthFinishRate": 0.92 } },
+    { "adv": { "price": "36.60", "surplusAmount": "2500.00", "minSingleTransAmount": "500.00" }, "advertiser": { "nickName": "ExpressCripto", "monthOrderCount": 210, "monthFinishRate": 0.97 } }
+  ],
+  "total": 5,
+  "success": true
+}

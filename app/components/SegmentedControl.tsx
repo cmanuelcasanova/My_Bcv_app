@@ -22,7 +22,7 @@ export default function SegmentedControl() {
         <Tabs.Trigger
           value="1"
           className="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all 
-                     data-[state=active]:bg-white data-[state=active]:shadow-sm 
+                     data-[state=active]:bg-green-700 data-[state=active]:shadow-sm 
                      data-[state=active]:text-black text-gray-500"
         >
           Bcv Dolar
@@ -30,7 +30,7 @@ export default function SegmentedControl() {
         <Tabs.Trigger
           value="2"
           className="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all 
-                     data-[state=active]:bg-white data-[state=active]:shadow-sm 
+                     data-[state=active]:bg-orange-500 data-[state=active]:shadow-sm 
                      data-[state=active]:text-black text-gray-500"
         >
           Binance

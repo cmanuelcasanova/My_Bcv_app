@@ -32,9 +32,9 @@ export default function Binance() {
   const store = useStore((store) => store);
   const { register, handleSubmit, watch } = useForm<FormData>();
   const cantidad_divisas = watch("cantidad");
-   const [prede, setPrede] = useState<boolean>(false);
+  const [prede, setPrede] = useState<boolean>(false);
 
-    const Formatear_Moneda = (i: Number): string => {
+  const Formatear_Moneda = (i: Number): string => {
     return i
       .toLocaleString("es-VE", {
         style: "currency",
@@ -71,7 +71,7 @@ export default function Binance() {
     };
 
     consultar_binance();
-    setLoading(false);
+   
   }, []);
 
   useEffect(() => {
@@ -87,23 +87,19 @@ export default function Binance() {
           0,
         ) / Binance_Ventas.length,
     });
+   
   }, [Binance_Compras, Binance_Ventas]);
 
-
-
-  useEffect( ()=>{
-
-    if(Binance) {
-     if (
+  useEffect(() => {
+    if (Binance) {
+      if (
         cantidad_divisas.length === 0 ||
         cantidad_divisas === "," ||
         cantidad_divisas === "."
       ) {
         setCalculo(0);
       } else {
-
-        if( !prede ) {
-        
+        if (!prede) {
           setCalculo(
             Math.round(
               ((parseFloat(cantidad_divisas.replace(",", ".")) *
@@ -112,22 +108,21 @@ export default function Binance() {
                 100,
             ) / 100,
           );
-
-        }else{   setCalculo(
+        } else {
+          setCalculo(
             Math.round(
               ((parseFloat(cantidad_divisas.replace(",", ".")) *
                 Math.round(Binance.compra * 100)) /
                 100) *
                 100,
             ) / 100,
-          ); }
-
+          );
         }
+      }
     }
+  }, [cantidad_divisas, prede]);
 
-  },[cantidad_divisas,prede]  )
-
-   const handleChangePrede = () => {
+  const handleChangePrede = () => {
     setPrede((prev) => {
       if (prev === true) localStorage.setItem("Default", "2");
       if (prev === false) localStorage.setItem("Default", "1");
@@ -135,17 +130,21 @@ export default function Binance() {
     });
   };
 
-
-
   const onSubmit = handleSubmit(async (data) => {
-    //if(dataF) setCalculo(  Math.round((data.cantidad*dataF?.current.eur)*100) /100   )
+    
   });
 
+  useEffect (()=>{
 
-  if (loading && Binance?.venta===0)
+ if(Binance?.venta!==undefined && !Number.isNaN(Binance?.venta)   ){setLoading(false)}
+
+
+  },[Binance]   )
+
+ 
+
+  if (loading)
     return <LoadingModal color={"#ff8903"} size={""} />;
-
-  
 
   return (
     <div className="flex flex-col items-center justify-center w-full mt-4 mb-20">
@@ -153,7 +152,7 @@ export default function Binance() {
         <div className="flex flex-col justify-center items-center w-40 mr-2">
           <h1 className="font-bold text-3xl text-white">Compras</h1>
 
-          <div className="w-35 flex flex-col items-center justify-center bg-black h-14 rounded-2xl text-2xl text-orange-400 text-center font-bold mt-1">
+          <div className="w-40 flex flex-col items-center justify-center bg-black h-14 rounded-2xl text-2xl text-orange-400 text-center font-bold mt-1">
             <div>{Binance?.compra.toFixed(2)} Bs. </div>{" "}
           </div>
         </div>
@@ -161,96 +160,84 @@ export default function Binance() {
         <div className="flex flex-col justify-center items-center w-40 ml-2">
           <h1 className="font-bold text-3xl text-white">Ventas</h1>
 
-          <div className="w-35 flex flex-col items-center justify-center bg-black h-14 rounded-2xl text-2xl text-orange-400  text-center font-bold mt-1">
+          <div className="w-40 flex flex-col items-center justify-center bg-black h-14 rounded-2xl text-2xl text-orange-400  text-center font-bold mt-1">
             <div>{Binance?.venta.toFixed(2)} Bs. </div>{" "}
           </div>
         </div>
       </div>
 
-       <Switch
-                      onChange={handleChangePrede}
-                      checked={prede}
-                      className="react-switch ml-4 mt-4"
-                      onColor="#000000"
-                      onHandleColor="#FFFFFF"
-                      offColor="#000000"
-                      offHandleColor="#FFFFFF"
-                      checkedIcon={
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "flex-start",
-                            alignItems: "center",
-                            height: "100%",
-                            fontSize: 12,
-                            color: "white",
-                            paddingLeft: 8,
-                          }}
-                        >
-                          Comprar
-                        </div>
-                      }
-                      width={90}
-                      height={35}
-                      handleDiameter={22}
-                      uncheckedIcon={
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "flex-end",
-                            alignItems: "center",
-                            height: "100%",
-                            fontSize: 12,
-                            color: "white",
-                            paddingRight: 8,
-                          }}
-                        >
-                          Vender
-                        </div>
-                      }
-                    ></Switch>
+      <Switch
+        onChange={handleChangePrede}
+        checked={prede}
+        className="react-switch ml-4 mt-4"
+        onColor="#000000"
+        onHandleColor="#FFFFFF"
+        offColor="#000000"
+        offHandleColor="#FFFFFF"
+        checkedIcon={
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              height: "100%",
+              fontSize: 12,
+              color: "white",
+              paddingLeft: 8,
+            }}
+          >
+            Comprar
+          </div>
+        }
+        width={90}
+        height={35}
+        handleDiameter={22}
+        uncheckedIcon={
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              height: "100%",
+              fontSize: 12,
+              color: "white",
+              paddingRight: 8,
+            }}
+          >
+            Vender
+          </div>
+        }
+      ></Switch>
 
+      <form onSubmit={onSubmit}>
+        <div className="flex flex-col gap-2 items-center justify- mt-4">
+          <div className="flex flex-wrap items-center justify-center">
+            <input
+              type="text"
+              inputMode="decimal"
+              step="0.01"
+              pattern="[0-9]*"
+              placeholder="Ingrese Divisa"
+              className="bg-white w-60 font-bold py-2 text-black text-2xl text-center rounded-2xl shadow-2xl"
+              required
+              {...register("cantidad")}
+            />
 
- <form onSubmit={onSubmit}>
-              <div className="flex flex-col gap-2 items-center justify- mt-4">
-                <div className="flex flex-wrap items-center justify-center">
-                  <input
-                    type="text"
-                    inputMode="decimal"
-                    step="0.01"
-                    pattern="[0-9]*"
-                    placeholder="Ingrese Divisa"
-                    className="bg-white w-60 font-bold py-2 text-black text-2xl text-center rounded-2xl shadow-2xl"
-                    required
-                    {...register("cantidad")}
-                  />
+            <span>
+              <RiMoneyDollarBoxFill size={55} className="text-white" />
+            </span>
 
-                  <span>
-                    
-                      <RiMoneyDollarBoxFill size={55} className="text-white" />
-                    
-                    
-                  </span>
-
-                   <div className="bg-white text-black py-4 mb-4 font-bold mt-10 w-80 shadow rounded-2xl text-center text-4xl">
+            <div className="bg-white text-black py-4 mb-4 font-bold mt-10 w-80 shadow rounded-2xl text-center text-4xl">
               {Formatear_Moneda(calculo)}
             </div>
-            
-                </div>
-              </div>
-            </form>
+          </div>
+        </div>
+      </form>
 
-            <div className="flex flex-col items-center justify-center text-white"> 
-            
-            <span>Aprox. {(calculo/store.Dolar).toFixed(2)} Dolar Bcv</span>  
-            <span>Aprox. {(calculo/store.Euro).toFixed(2)} Euro Bcv      </span>
-                
-             </div>
-
-
-
-
-
+      <div className="flex flex-col items-center justify-center text-white">
+        <span>Aprox. {(calculo / store.Dolar).toFixed(2)} Dolar Bcv</span>
+        <span>Aprox. {(calculo / store.Euro).toFixed(2)} Euro Bcv </span>
+      </div>
     </div>
   );
 }

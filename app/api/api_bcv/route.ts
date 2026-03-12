@@ -3,9 +3,12 @@ import { Api_Bcv } from "@/app/types/api_bcv"
 import axios from 'axios';
 import https from 'https';
 import * as cheerio from 'cheerio';
+import datalocal from "./data.json"
 
 
 //export const revalidate = 60;
+
+const isDev = process.env.NODE_ENV === 'development';
 
 const userAgents = [
   // --- MÓVILES (iOS) ---
@@ -47,6 +50,13 @@ const agent = new https.Agent({
 export async function GET() {
 
 try {
+
+
+  if(isDev){
+    return NextResponse.json({status: 200 , data : datalocal , api: 1});
+  }
+
+
  
   const { data } = await axios.get(URL, {
   headers: { 

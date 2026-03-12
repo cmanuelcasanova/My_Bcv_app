@@ -1,0 +1,12 @@
+{
+  "code": "000000",
+  "data": [
+    { "adv": { "price": "36.40", "surplusAmount": "5000.00", "minSingleTransAmount": "1000.00" }, "advertiser": { "nickName": "BancoFull_Cash", "monthOrderCount": 1200, "monthFinishRate": 0.99 } },
+    { "adv": { "price": "36.38", "surplusAmount": "800.00", "minSingleTransAmount": "500.00" }, "advertiser": { "nickName": "SoloBanesco", "monthOrderCount": 300, "monthFinishRate": 0.98 } },
+    { "adv": { "price": "36.35", "surplusAmount": "100.00", "minSingleTransAmount": "100.00" }, "advertiser": { "nickName": "Juan_Cambios", "monthOrderCount": 45, "monthFinishRate": 0.88 } },
+    { "adv": { "price": "36.32", "surplusAmount": "2200.00", "minSingleTransAmount": "200.00" }, "advertiser": { "nickName": "Trade_Vzla24", "monthOrderCount": 560, "monthFinishRate": 0.96 } },
+    { "adv": { "price": "36.30", "surplusAmount": "1500.00", "minSingleTransAmount": "500.00" }, "advertiser": { "nickName": "Cripto_Enlace", "monthOrderCount": 150, "monthFinishRate": 0.94 } }
+  ],
+  "total": 5,
+  "success": true
+}
