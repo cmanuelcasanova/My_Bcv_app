@@ -7,10 +7,7 @@ import { RiMoneyDollarBoxFill } from "react-icons/ri";
 import Switch from "react-switch";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-type Data_Comerciante = {
-  precio: number;
-  precio_min: number;
-};
+
 
 type BinanceType = {
   compra: number;
@@ -22,17 +19,14 @@ type FormData = {
 };
 
 export default function Binance() {
-  const [Binance_Compras, setBinance_Compras] = useState<Data_Comerciante[]>(
-    [],
-  );
-  const [Binance_Ventas, setBinance_Ventas] = useState<Data_Comerciante[]>([]);
-  const [Binance, setBinance] = useState<BinanceType>();
+
+  const [Binance, setBinance] = useState<BinanceType>({compra:0,venta:0});
   const [loading, setLoading] = useState<boolean>(true);
   const [calculo, setCalculo] = useState<number>(0);
   const store = useStore((store) => store);
-  const { register, handleSubmit, watch } = useForm<FormData>();
+  const { register, handleSubmit, watch, setValue } = useForm<FormData>();
   const cantidad_divisas = watch("cantidad");
-  const [prede, setPrede] = useState<boolean>(false);
+  const [predeB, setPredeB] = useState<boolean>(store.checkBinance);
 
   const Formatear_Moneda = (i: Number): string => {
     return i
@@ -44,62 +38,71 @@ export default function Binance() {
   };
 
   useEffect(() => {
+
     const consultar_binance = async () => {
+      
       const response = await fetch(
         `/api/api_binance?monto_minimo=${store.Dolar ? store.Dolar * 30 : 0}`,
       );
       const data: Consulta_Binance_Type = await response.json();
 
-      setBinance_Compras(
-        data.Compra.map((i) => {
-          return {
-            precio: parseFloat(i.adv.price),
-            precio_min:
-              parseFloat(i.adv.minSingleTransAmount) / parseFloat(i.adv.price),
-          };
-        }),
-      );
-      setBinance_Ventas(
-        data.Venta.map((i) => {
-          return {
-            precio: parseFloat(i.adv.price),
-            precio_min:
-              parseFloat(i.adv.minSingleTransAmount) / parseFloat(i.adv.price),
-          };
-        }),
-      );
+      const PromedioCompra =  data.Compra.reduce(
+          (acumulador, valorActual) => acumulador + parseFloat(valorActual.adv.price),
+          0,
+        ) / data.Compra.length;
+      
+      const PromedioVenta=  data.Venta.reduce(
+          (acumulador, valorActual) => acumulador + parseFloat(valorActual.adv.price),
+          0,
+        ) / data.Venta.length;
+
+
+      setBinance({ compra: PromedioCompra, venta: PromedioVenta });
+      store.setBinanceBuy(PromedioCompra)
+      store.setBinanceSell(PromedioVenta)
+
     };
 
-    consultar_binance();
+    if ( store.BinanceBuy  ===0 && store.BinanceSell===0  ) { 
+      consultar_binance()
+    }else{
+
+      setBinance({compra: store.BinanceBuy , venta:store.BinanceSell}  )
+
+    }
+
+   setValue("cantidad",store.inputDivisa)
    
   }, []);
 
-  useEffect(() => {
-    setBinance({
-      compra:
-        Binance_Compras.reduce(
-          (acumulador, valorActual) => acumulador + valorActual.precio,
-          0,
-        ) / Binance_Compras.length,
-      venta:
-        Binance_Ventas.reduce(
-          (acumulador, valorActual) => acumulador + valorActual.precio,
-          0,
-        ) / Binance_Ventas.length,
-    });
-   
-  }, [Binance_Compras, Binance_Ventas]);
+  
+  useEffect (()=>{
+
+    
+ if(Binance.venta!==0 && Binance.compra!==0){
+  setLoading(false)
+  
+}
+
+  },[Binance]   )
+
+
 
   useEffect(() => {
-    if (Binance) {
+    
+    store.setinputDivisa(cantidad_divisas)
+   
+    if (Binance && cantidad_divisas) {
+     
       if (
         cantidad_divisas.length === 0 ||
         cantidad_divisas === "," ||
         cantidad_divisas === "."
       ) {
+       
         setCalculo(0);
       } else {
-        if (!prede) {
+        if (!predeB) {
           setCalculo(
             Math.round(
               ((parseFloat(cantidad_divisas.replace(",", ".")) *
@@ -119,29 +122,24 @@ export default function Binance() {
           );
         }
       }
-    }
-  }, [cantidad_divisas, prede]);
+    }else {setCalculo(0)}
+  }, [cantidad_divisas, predeB]);
 
-  const handleChangePrede = () => {
-    setPrede((prev) => {
-      if (prev === true) localStorage.setItem("Default", "2");
-      if (prev === false) localStorage.setItem("Default", "1");
-      return !prev;
-    });
+  const handleChangePredeB = () => {
+    setPredeB((prevB) => !prevB);
+    store.setcheckBinance()
+    
   };
+
+
 
   const onSubmit = handleSubmit(async (data) => {
     
   });
 
-  useEffect (()=>{
-
- if(Binance?.venta!==undefined && !Number.isNaN(Binance?.venta)   ){setLoading(false)}
-
-
-  },[Binance]   )
 
  
+
 
   if (loading)
     return <LoadingModal color={"#ff8903"} size={""} />;
@@ -167,8 +165,8 @@ export default function Binance() {
       </div>
 
       <Switch
-        onChange={handleChangePrede}
-        checked={prede}
+        onChange={handleChangePredeB}
+        checked={predeB}
         className="react-switch ml-4 mt-4"
         onColor="#000000"
         onHandleColor="#FFFFFF"

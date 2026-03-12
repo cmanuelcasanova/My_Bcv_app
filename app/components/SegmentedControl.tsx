@@ -15,7 +15,7 @@ export default function SegmentedControl() {
   return (
     <Tabs.Root
       onValueChange={handleValueChange}
-      defaultValue="tab1"
+      defaultValue="1"
       className="flex flex-col w-80"
     >
       <Tabs.List className="flex p-1 bg-gray-100 rounded-xl bg-opacity-80">

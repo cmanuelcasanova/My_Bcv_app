@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
   const monto_minimo = searchParams.get("monto_minimo") || "0";
   const isDev = process.env.NODE_ENV === "development";
 
+  
   if (isDev) {
     return NextResponse.json({
       status: 200,

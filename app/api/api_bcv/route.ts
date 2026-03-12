@@ -51,6 +51,7 @@ export async function GET() {
 
 try {
 
+  
 
   if(isDev){
     return NextResponse.json({status: 200 , data : datalocal , api: 1});

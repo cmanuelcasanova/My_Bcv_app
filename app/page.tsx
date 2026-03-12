@@ -172,31 +172,7 @@ export default function Home() {
       .replace(/Bs[\s\.]*S/, "Bs");
   };
 
-  const consultar_binance = async () => {
-    const response = await fetch(
-      `/api/api_binance?monto_minimo=${dataF ? dataF.current.usd * 30 : 0}`,
-    );
-    const data: Consulta_Binance_Type = await response.json();
-
-    setBinance_Compras(
-      data.Compra.map((i) => {
-        return {
-          precio: parseFloat(i.adv.price),
-          precio_min:
-            parseFloat(i.adv.minSingleTransAmount) / parseFloat(i.adv.price),
-        };
-      }),
-    );
-    setBinance_Ventas(
-      data.Venta.map((i) => {
-        return {
-          precio: parseFloat(i.adv.price),
-          precio_min:
-            parseFloat(i.adv.minSingleTransAmount) / parseFloat(i.adv.price),
-        };
-      }),
-    );
-  };
+ 
 
   
 
