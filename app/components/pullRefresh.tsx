@@ -14,7 +14,9 @@ export default function PullRefresh({ children }: { children: React.ReactNode })
     <PullToRefresh 
       onRefresh={handleRefresh}
       className="custom-pull" 
-      pullingContent={""}    
+      pullingContent={""} 
+      pullDownThreshold={150} 
+      resistance={2}   
     >
       {children}
     </PullToRefresh>
