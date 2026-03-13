@@ -377,14 +377,7 @@ export default function Home() {
 
             <SC_Type_Convertion/>
 
-              {/* <Image
-            src="/bs.png"
-            alt="Picture of the author"
-            width={150}
-            height={150}
-            loading="eager"
-            className="mb-4 border-2 border-black  w-14 shadow-l h-14 bg-white rounded-full"
-          />*/}
+              
 
             <form onSubmit={onSubmit}>
               <div className="flex flex-col gap-2 items-center justify- mt-10">
@@ -394,7 +387,7 @@ export default function Home() {
                     inputMode="decimal"
                     step="0.01"
                     pattern="[0-9]*"
-                    placeholder="Ingrese Divisa"
+                    placeholder={ store.OptionConvertion==='1' ? "Ingrese Divisa" : "Ingrese Bs."}
                     className="bg-white w-60 font-bold py-2 text-black text-3xl text-center rounded-2xl shadow-2xl"
                     required
                     {...register("cantidad")}
@@ -417,7 +410,7 @@ export default function Home() {
             width={150}
             height={150}
             loading="eager"
-            className=" border-2 border-black  w-14 h-14 bg-white rounded-full"
+            className=" border-2 border-black ml-1 w-14 h-14 bg-white rounded-full"
           />}
                   </span>
                 </div>
