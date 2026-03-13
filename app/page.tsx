@@ -24,6 +24,7 @@ import { IoMenu } from "react-icons/io5";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoIosInformationCircle } from "react-icons/io";
 import SegmentedControl from "@/app/components/SegmentedControl";
+import SC_Type_Convertion from "@/app/components/SC_Type_Convertion";
 import { useStore } from "./store/useSection";
 import Binance from "@/app/components/Binance"
 
@@ -50,7 +51,7 @@ export default function Home() {
     [],
   );
   const [Binance_Ventas, setBinance_Ventas] = useState<Data_Comerciante[]>([]);
-  const { register, handleSubmit, watch } = useForm<FormData>();
+  const { register, handleSubmit, watch, setValue} = useForm<FormData>();
   const cantidad_divisas = watch("cantidad");
   const [fecha, setFecha] = useState<Date | null>(null);
   const [dia, setDia] = useState<String | null>(null);
@@ -136,40 +137,52 @@ export default function Home() {
       ) {
         setCalculo(0);
       } else {
-        if (checked) {
+
+        if(store.OptionConvertion==='1'){
+       
           setCalculo(
             Math.round(
               ((parseFloat(cantidad_divisas.replace(",", ".")) *
-                Math.round(dataF?.current.usd * 100)) /
+                Math.round( ( checked ? dataF?.current.usd : dataF?.current.eur) * 100)) /
                 100) *
                 100,
             ) / 100,
           );
-        } else {
-          setCalculo(
-            Math.round(
-              ((parseFloat(cantidad_divisas.replace(",", ".")) *
-                Math.round(dataF?.current.eur * 100)) /
-                100) *
-                100,
-            ) / 100,
-          );
-        }
+       
+      }else {
+
+        
+        
+         setCalculo(
+            
+              ((parseFloat(cantidad_divisas.replace(",", ".")) /
+                ( checked ? dataF?.current.usd : dataF?.current.eur) )   ));
+
+
+
+      } 
       }
     }
-  }, [cantidad_divisas, checked]);
+  }, [cantidad_divisas, checked, store.OptionConvertion]);
+
+
+   useEffect(() => {
+    setValue("cantidad","")
+    
+  }, [store.OptionConvertion]);
+
 
   useEffect(() => {
     if (dataF) setFecha(new Date(dataF?.current.date));
   }, [dataF]);
 
   const Formatear_Moneda = (i: Number): string => {
-    return i
+    return ( store.OptionConvertion==='1' ?   i
       .toLocaleString("es-VE", {
         style: "currency",
         currency: "VES",
       })
-      .replace(/Bs[\s\.]*S/, "Bs");
+      .replace(/Bs[\s\.]*S/, "Bs") : (checked ? i.toLocaleString('en-US', { style: 'currency', currency: 'USD' }): i.toLocaleString('en-IE', { style: 'currency', currency: 'EUR' }))   );
   };
 
  
@@ -270,7 +283,7 @@ export default function Home() {
             width={150}
             height={150}
             loading="eager"
-            className="mb-4 rounded-2xl w-30 shadow-l h-30"
+            className="mb-4 rounded-2xl w-25 shadow-l h-25"
           />
 
           <div className="p-4">
@@ -340,7 +353,7 @@ export default function Home() {
               {dia && <span className="text-white text-2xl">{dia}</span>}
             </div>
 
-            <div className="text-white text-2xl mt-6">
+            <div className="text-white text-2xl my-6">
               {checked ? (
                 <div>
                   {" "}
@@ -362,6 +375,17 @@ export default function Home() {
               )}
             </div>
 
+            <SC_Type_Convertion/>
+
+              {/* <Image
+            src="/bs.png"
+            alt="Picture of the author"
+            width={150}
+            height={150}
+            loading="eager"
+            className="mb-4 border-2 border-black  w-14 shadow-l h-14 bg-white rounded-full"
+          />*/}
+
             <form onSubmit={onSubmit}>
               <div className="flex flex-col gap-2 items-center justify- mt-10">
                 <div className="flex flex-wrap items-center justify-center">
@@ -377,12 +401,24 @@ export default function Home() {
                   />
 
                   <span>
+
+
                     {" "}
-                    {checked ? (
+                    
+                    {store.OptionConvertion==='1' ? 
+                    
+                    checked ? (
                       <RiMoneyDollarBoxFill size={55} className="text-white" />
                     ) : (
                       <RiMoneyEuroBoxFill size={55} className="text-white" />
-                    )}
+                    ) :   <Image
+            src="/bs.png"
+            alt="Picture of the author"
+            width={150}
+            height={150}
+            loading="eager"
+            className=" border-2 border-black  w-14 h-14 bg-white rounded-full"
+          />}
                   </span>
                 </div>
               </div>

@@ -8,9 +8,11 @@ interface AppState {
   BinanceSell: number;
   inputDivisa: string;
   checkBinance:boolean;
+  OptionConvertion:string;
   setDolar: (valor: number) => void;
   setEuro: (valor:number) => void;
   setOption: (nuevoOption: string) => void;
+  setOptionConvertion: (nuevoOption: string) => void;
   setBinanceBuy: (valor: number) => void;
   setBinanceSell: (valor: number) => void;
   setinputDivisa: (valor: string) => void;
@@ -25,7 +27,9 @@ export const useStore = create<AppState>((set) => ({
     BinanceSell:0,
     inputDivisa:"",
     checkBinance:false,
+    OptionConvertion:'1',
     setOption: (nuevoOption) => set({ Option: nuevoOption }),
+    setOptionConvertion: (nuevoOption) => set({ OptionConvertion: nuevoOption }),
     setDolar: (valor) => set({ Dolar: valor }),
     setEuro: (valor) => set({ Euro: valor }),
     setBinanceBuy: (valor) => set({ BinanceBuy: valor }),
