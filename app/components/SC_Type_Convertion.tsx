@@ -31,7 +31,7 @@ export default function SC_Type_Convertion() {
         <Tabs.Trigger
           value="2"
           className="flex-1 px-4 py-1 text-lg font-medium rounded-lg transition-all 
-                     data-[state=active]:bg-amber-800 data-[state=active]:shadow-sm 
+                     data-[state=active]:bg-[#97573a] data-[state=active]:shadow-sm 
                      data-[state=active]:text-black text-gray-500"
         >
           Bs a Divisas
