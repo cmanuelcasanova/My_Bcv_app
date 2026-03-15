@@ -9,7 +9,7 @@ export default function SegmentedControl() {
   const setOption = useStore( (store) =>  store.setOption  )
 
   const handleValueChange = (value: string) => {
-    setOption(value);
+    
   };
 
   return (

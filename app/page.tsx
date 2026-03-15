@@ -43,6 +43,7 @@ type Data_Comerciante = {
 };
 
 export default function Home() {
+  const store = useStore((store) => store);
   const [dataF, setDataF] = useState<Api_Bcv | null>(null);
   const [Api_Response, setApiResponse] = useState<Number>();
   const [loading, setLoading] = useState(true);
@@ -64,10 +65,17 @@ export default function Home() {
   const notify = () => toast("📋​ Copiado ✔️");
   //const option = searchParams.get('option')
   const [menu, setMenu] = useState<Boolean>(false);
-  const store = useStore((store) => store);
+  
 
   const handleChange = () => {
     setChecked((prev) => !prev);
+  };
+
+  
+  const handleChangeBinance = () => {
+    
+    store.setOption();
+    
   };
 
   const handleChangePrede = () => {
@@ -197,17 +205,7 @@ export default function Home() {
   }  )
  }
 
- const MoneyCompment = [<RiMoneyDollarBoxFill size={55} className="text-white" />,
-                     <RiMoneyEuroBoxFill size={55} className="text-white" />,
-                    <Image
-                      src="/bs.png"
-                      alt="Picture of the author"
-                      width={150}
-                      height={150}
-                      loading="eager"
-                      className=" border-2 border-black ml-1 w-14 h-14 bg-white rounded-full"
-                      />
-                    ]
+
   
 
 
@@ -242,6 +240,13 @@ export default function Home() {
     <div className="flex min-h-screen items-start justify-center bg-linear-to-b from-blue-950 via-blue-900 to-black">
       {dataF && (
         <div className="flex flex-col items-center justify-center w-full">
+
+
+          <div className="flex flex-wrap items-center justify-between w-full px-2">
+
+
+
+         
           {!menu ? (
             <IoMenu
               size={40}
@@ -278,7 +283,7 @@ export default function Home() {
                       paddingLeft: 8,
                     }}
                   >
-                    USD
+                    Dolar
                   </div>
                 }
                 width={70}
@@ -296,12 +301,64 @@ export default function Home() {
                       paddingRight: 8,
                     }}
                   >
-                    EUR
+                    Eur
                   </div>
                 }
               ></Switch>
             </div>
           )}
+
+
+          <Switch
+                onChange={handleChangeBinance}
+                checked={store.Option}
+                className="react-switch ml-4"
+                onColor="#1e8420"
+                onHandleColor="#084f09"
+                offColor="#ffe5b4"
+                offHandleColor="#fecd07"
+                checkedIcon={
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      height: "100%",
+                      fontSize: 14,
+                      color: "white",
+                      paddingLeft: 8,
+                    }}
+                  >
+                    Bcv
+                  </div>
+                }
+                width={65}
+                height={35}
+                handleDiameter={22}
+                uncheckedIcon={
+                  <div
+                  
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      height: "100%",
+                      fontSize: 12,
+                      color: "black",
+                      paddingRight: 8,
+                      
+                    }}
+                  >
+                  <SiBinance size={20} className="text-orange-500"/>
+                  </div>
+                }
+              ></Switch>
+
+
+
+
+        </div>
+
           <Image
             src="/logobcv.png"
             alt="Picture of the author"
@@ -311,14 +368,10 @@ export default function Home() {
             className="mb-4 rounded-2xl w-25 shadow-l h-25"
           />
 
-          <div className="flex flex-wrap items-center justify-center w-full">
-            <SegmentedControl />
-            
-
-          </div>
+     
 
 
-          { store.Option==='1' ?
+          { store.Option ?
 
           <div className="flex flex-col items-center justify-center w-full mt-4">
             <Switch
@@ -444,7 +497,7 @@ export default function Home() {
               </div>
             </form>
 
-            <div className="bg-white text-gray-800 py-4 font-bold mt-10 w-80 shadow rounded-2xl text-center text-4xl">
+            <div className="bg-gray-300 text-gray-800 py-4 font-bold mt-10 w-80 shadow rounded-2xl text-center text-4xl">
               {Formatear_Moneda(calculo)}
             </div>
 

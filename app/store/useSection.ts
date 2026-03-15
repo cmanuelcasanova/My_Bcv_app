@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 interface AppState {
-  Option: string;
+  Option: boolean;
   Dolar: number;
   Euro: number;
   BinanceBuy: number;
@@ -11,7 +11,7 @@ interface AppState {
   OptionConvertion:string;
   setDolar: (valor: number) => void;
   setEuro: (valor:number) => void;
-  setOption: (nuevoOption: string) => void;
+  setOption: () => void;
   setOptionConvertion: (nuevoOption: string) => void;
   setBinanceBuy: (valor: number) => void;
   setBinanceSell: (valor: number) => void;
@@ -20,7 +20,7 @@ interface AppState {
 }
 
 export const useStore = create<AppState>((set) => ({
-    Option: '1',
+    Option: true,
     Dolar: 0, 
     Euro: 0, 
     BinanceBuy:0,
@@ -28,7 +28,7 @@ export const useStore = create<AppState>((set) => ({
     inputDivisa:"",
     checkBinance:false,
     OptionConvertion:'1',
-    setOption: (nuevoOption) => set({ Option: nuevoOption }),
+    setOption: () => set( (state)=> ({Option:!state.Option})),
     setOptionConvertion: (nuevoOption) => set({ OptionConvertion: nuevoOption }),
     setDolar: (valor) => set({ Dolar: valor }),
     setEuro: (valor) => set({ Euro: valor }),
