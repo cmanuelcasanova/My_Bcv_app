@@ -16,7 +16,7 @@ export default function SegmentedControl() {
     <Tabs.Root
       onValueChange={handleValueChange}
       defaultValue="1"
-      className="flex flex-col w-80"
+      className="flex flex-col w-[90%] mx-4"
     >
       <Tabs.List className="flex p-1 bg-gray-100 rounded-xl bg-opacity-80">
         <Tabs.Trigger

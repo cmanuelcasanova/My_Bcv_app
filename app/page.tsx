@@ -3,7 +3,7 @@
 import Image from "next/image";
 //import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, set } from "react-hook-form";
 import { RiMoneyDollarBoxFill } from "react-icons/ri";
 import Link from "next/link";
 import dayjs from "dayjs";
@@ -28,6 +28,7 @@ import SC_Type_Convertion from "@/app/components/SC_Type_Convertion";
 import { useStore } from "./store/useSection";
 import Binance from "@/app/components/Binance"
 
+
 dayjs.extend(weekday);
 dayjs.extend(localizedFormat);
 dayjs.locale("es");
@@ -45,6 +46,7 @@ export default function Home() {
   const [dataF, setDataF] = useState<Api_Bcv | null>(null);
   const [Api_Response, setApiResponse] = useState<Number>();
   const [loading, setLoading] = useState(true);
+  const [money,setMoney]=useState<number>(1);
   const [error, setError] = useState<boolean>(false);
   const [calculo, setCalculo] = useState<number>(0);
   const [Binance_Compras, setBinance_Compras] = useState<Data_Comerciante[]>(
@@ -123,6 +125,8 @@ export default function Home() {
   });
 
   useEffect(() => {
+
+    
     if (dataF) {
       if (Api_Response === 2) {
         setDia(dayjs(dataF.current.date).format("dddd, L"));
@@ -133,7 +137,7 @@ export default function Home() {
       if (
         cantidad_divisas.length === 0 ||
         cantidad_divisas === "," ||
-        cantidad_divisas === "."
+        cantidad_divisas === "." || !parseFloat(cantidad_divisas)
       ) {
         setCalculo(0);
       } else {
@@ -163,7 +167,7 @@ export default function Home() {
       } 
       }
     }
-  }, [cantidad_divisas, checked, store.OptionConvertion]);
+  }, [dataF,cantidad_divisas, checked, store.OptionConvertion]);
 
 
    useEffect(() => {
@@ -185,8 +189,29 @@ export default function Home() {
       .replace(/Bs[\s\.]*S/, "Bs") : (checked ? i.toLocaleString('en-US', { style: 'currency', currency: 'USD' }): i.toLocaleString('en-IE', { style: 'currency', currency: 'EUR' }))   );
   };
 
- 
+ const toogle_Money = () => {
 
+  setMoney( prev => {
+    if(prev===2) return 0
+    return prev+1
+  }  )
+ }
+
+ const MoneyCompment = [<RiMoneyDollarBoxFill size={55} className="text-white" />,
+                     <RiMoneyEuroBoxFill size={55} className="text-white" />,
+                    <Image
+                      src="/bs.png"
+                      alt="Picture of the author"
+                      width={150}
+                      height={150}
+                      loading="eager"
+                      className=" border-2 border-black ml-1 w-14 h-14 bg-white rounded-full"
+                      />
+                    ]
+  
+
+
+ 
   
 
   //if (!dataF ) return <BiMessageRoundedError size={50}/>;
@@ -286,8 +311,10 @@ export default function Home() {
             className="mb-4 rounded-2xl w-25 shadow-l h-25"
           />
 
-          <div className="p-4">
+          <div className="flex flex-wrap items-center justify-center w-full">
             <SegmentedControl />
+            
+
           </div>
 
 
@@ -401,9 +428,9 @@ export default function Home() {
                     {store.OptionConvertion==='1' ? 
                     
                     checked ? (
-                      <RiMoneyDollarBoxFill size={55} className="text-white" />
+                      <RiMoneyDollarBoxFill size={55} className="text-white" onClick={()=>toogle_Money()}/>
                     ) : (
-                      <RiMoneyEuroBoxFill size={55} className="text-white" />
+                      <RiMoneyEuroBoxFill size={55} className="text-white" onClick={()=>toogle_Money()} />
                     ) :   <Image
             src="/bs.png"
             alt="Picture of the author"
@@ -417,7 +444,7 @@ export default function Home() {
               </div>
             </form>
 
-            <div className="bg-white text-black py-4 font-bold mt-10 w-80 shadow rounded-2xl text-center text-4xl">
+            <div className="bg-white text-gray-800 py-4 font-bold mt-10 w-80 shadow rounded-2xl text-center text-4xl">
               {Formatear_Moneda(calculo)}
             </div>
 
