@@ -145,13 +145,15 @@ export default function Home() {
       if (
         cantidad_divisas.length === 0 ||
         cantidad_divisas === "," ||
-        cantidad_divisas === "." || !parseFloat(cantidad_divisas)
+        cantidad_divisas === "." || !parseFloat(cantidad_divisas.replace(",", "."))
       ) {
         setCalculo(0);
+       
       } else {
 
         if(store.OptionConvertion==='1'){
        
+          
           setCalculo(
             Math.round(
               ((parseFloat(cantidad_divisas.replace(",", ".")) *
@@ -182,6 +184,15 @@ export default function Home() {
     setValue("cantidad","")
     
   }, [store.OptionConvertion]);
+
+  useEffect(() => {
+    
+    if(cantidad_divisas){
+    if(cantidad_divisas===',' || cantidad_divisas==='')setValue("cantidad","0.")
+    if(cantidad_divisas.length>1){setValue ("cantidad" ,cantidad_divisas.replace(/([,.])\1+/g, '$1'))   }}
+
+    
+  }, [cantidad_divisas]);
 
 
   useEffect(() => {
