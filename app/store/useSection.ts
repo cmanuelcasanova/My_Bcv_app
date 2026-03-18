@@ -9,6 +9,8 @@ interface AppState {
   inputDivisa: string;
   checkBinance:boolean;
   OptionConvertion:string;
+  viewDolar:boolean;
+
   setDolar: (valor: number) => void;
   setEuro: (valor:number) => void;
   setOption: () => void;
@@ -17,6 +19,9 @@ interface AppState {
   setBinanceSell: (valor: number) => void;
   setinputDivisa: (valor: string) => void;
   setcheckBinance: () => void;
+  setToogleDolar: () => void;
+  setviewDolar: (valor:boolean) => void;
+
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -28,6 +33,8 @@ export const useStore = create<AppState>((set) => ({
     inputDivisa:"",
     checkBinance:false,
     OptionConvertion:'1',
+    viewDolar:true,
+
     setOption: () => set( (state)=> ({Option:!state.Option})),
     setOptionConvertion: (nuevoOption) => set({ OptionConvertion: nuevoOption }),
     setDolar: (valor) => set({ Dolar: valor }),
@@ -36,4 +43,6 @@ export const useStore = create<AppState>((set) => ({
     setBinanceSell: (valor) => set({ BinanceSell: valor }),
     setinputDivisa: (valor) => set({ inputDivisa: valor }),
     setcheckBinance: () => set( (state)=> ({checkBinance:!state.checkBinance})),
+    setviewDolar: (valor) => set({ viewDolar: valor }),
+    setToogleDolar: () => set( (state)=> ({viewDolar:!state.viewDolar})),
 }));

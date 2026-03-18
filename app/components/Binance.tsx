@@ -97,7 +97,7 @@ export default function Binance() {
       if (
         cantidad_divisas.length === 0 ||
         cantidad_divisas === "," ||
-        cantidad_divisas === "."
+        cantidad_divisas === "." || !parseFloat(cantidad_divisas.replace(",", "."))
       ) {
        
         setCalculo(0);
@@ -137,7 +137,14 @@ export default function Binance() {
     
   });
 
+  useEffect(() => {
+    
+    if(cantidad_divisas){
+    if(cantidad_divisas===',' || cantidad_divisas==='.')setValue("cantidad","0.")
+    if(cantidad_divisas.length>1){setValue ("cantidad" ,cantidad_divisas.replace(/([,.])\1+/g, '$1'))   }}
 
+    
+  }, [cantidad_divisas]);
  
 
 
