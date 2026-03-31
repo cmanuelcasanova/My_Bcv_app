@@ -267,7 +267,7 @@ export default function Bcv() {
                           ? "Ingrese Divisa"
                           : "Ingrese Bs."
                       }
-                      className="bg-white w-60 font-bold py-2 text-black text-3xl text-center rounded-2xl shadow-2xl"
+                      className="bg-white w-60 font-bold py-2 text-black text-2xl text-center rounded-2xl shadow-2xl"
                       required
                       {...register("cantidad")}
                     />

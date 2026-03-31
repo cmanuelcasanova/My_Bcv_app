@@ -232,10 +232,12 @@ export default function Binance() {
               <RiMoneyDollarBoxFill size={55} className="text-white" />
             </span>
 
+          </div>
+
+          
             <div className="bg-white text-black py-4 mb-4 font-bold mt-10 w-80 shadow rounded-2xl text-center text-4xl">
               {Formatear_Moneda(calculo)}
             </div>
-          </div>
         </div>
       </form>
 
