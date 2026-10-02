@@ -20,6 +20,9 @@ import { useStore } from "@/app/store/useSection";
 import Binance from "@/app/components/Binance";
 import Error from "@/app/components/Error";
 import Navbar from "@/app/components/Navbar";
+import { FaWhatsapp } from "react-icons/fa";
+import { FaShareAlt } from "react-icons/fa";
+import { FaShare } from "react-icons/fa";
 
 dayjs.extend(weekday);
 dayjs.extend(localizedFormat);
@@ -140,7 +143,18 @@ export default function Bcv() {
         : i.toLocaleString("en-IE", { style: "currency", currency: "EUR" });
   };
 
- 
+  const shareWhatsapp = (monto: string):void => {
+
+    const message = `Fecha: ${new Date().toLocaleDateString('es-VE')}
+${cantidad_divisas} $ × ${ store.viewDolar ? dataF?.current.usd.toFixed(2) + "Bs (BCV $)"  : dataF?.current.eur.toFixed(2) + "Bs (BCV €)"} 
+🧾 Total: ${monto}`
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+
+  }
+
+
+
 
   if (!dataF) return <LoadingModal color={"#0b1493"} size={"full"} />;
   if (error) return <Error />;
@@ -307,7 +321,8 @@ export default function Bcv() {
                 {Formatear_Moneda(calculo)}
               </div>
 
-              <div className="flex flex-wrap justify-center items-center mt-4">
+              <div className="flex flex-col justify-center items-center mt-4 gap-6">
+                <div className="flex flex-wrap items-center justify-center">
                 <FaRegCopy className="text-white" />
                 <button
                   className=" text-white rounded-xl px-2"
@@ -318,6 +333,15 @@ export default function Bcv() {
                 >
                   Copiar
                 </button>
+                </div>
+                <div 
+                className="bg-white py-1 flex flex-wrap justify-center items-center gap-2 rounded-xl px-4"
+                onClick={() => shareWhatsapp(Formatear_Moneda(calculo))}>
+                  {/*<FaShareAlt />*/} 
+                  <label className="text-black/90 font-bold"> Enviar... </label>
+                  <FaWhatsapp className="text-green-500" size={25}/>
+
+                </div>
               </div>
 
               <Toaster />
