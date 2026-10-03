@@ -8,6 +8,7 @@ export default function Configuracion() {
         
                    
           <Btn_Back />
+          
         </div>
 
     )}

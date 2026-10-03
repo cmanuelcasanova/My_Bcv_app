@@ -112,7 +112,7 @@ export default function Navbar() {
       ></Switch>
 
       {menu && (
-        <div className="bg-blue-950 w-full inset-x-0 top-full h-20 p-4 pt-4 my-4 text-white font-bold">
+        <div className="bg-blue-950 w-full inset-x-0 top-full p-4 pt-4 my-4 text-white font-bold">
           
           { /* Switch Moneda PRederterminada */ }
 
@@ -159,6 +159,23 @@ export default function Navbar() {
               </div>
             }
           ></Switch>
+
+          {/*
+          <div className="mb-6"> Datos Pago Movil: </div>
+      
+
+          <div className="w-full inset-x-0 top-full gap-2 flex flex-col">  
+
+              <label htmlFor=""> Banco </label><input type="text" className="border-white"
+              />
+
+               <label htmlFor=""> Telefono </label><input type="text" className="border-white"
+              />
+             
+            
+          </div>
+
+          */}
         </div>
       )}
 

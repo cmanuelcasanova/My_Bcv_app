@@ -146,7 +146,7 @@ export default function Bcv() {
   const shareWhatsapp = (monto: string):void => {
 
     const message = `Fecha: ${new Date().toLocaleDateString('es-VE')}
-${cantidad_divisas} $ × ${ store.viewDolar ? dataF?.current.usd.toFixed(2) + " Bs. (BCV $)"  : dataF?.current.eur.toFixed(2) + " Bs. (BCV €)"} 
+${cantidad_divisas} ${store.OptionConvertion==='1' ? "$" : " Bs"} ${store.OptionConvertion === '1' ? "x​" : "/"} ${ store.viewDolar ? dataF?.current.usd.toFixed(2) + " Bs (BCV $)"  : dataF?.current.eur.toFixed(2) + " Bs (BCV €)"} 
 
 Total: ${monto}`
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
