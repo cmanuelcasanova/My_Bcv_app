@@ -32,10 +32,20 @@ type FormData = {
   cantidad: string;
 };
 
+interface PagoMovil_Types {
+
+  Banco: {
+    value: string,
+    label: string
+  }
+  Telefono: string,
+  Cedula: string
+}
+
 
 export default function Bcv() {
 
-      const store = useStore((store) => store);
+  const store = useStore((store) => store);
   const [dataF, setDataF] = useState<Api_Bcv | null>(null);
   const [Api_Response, setApiResponse] = useState<Number>();
   const [error, setError] = useState<boolean>(false);
@@ -44,7 +54,7 @@ export default function Bcv() {
   const cantidad_divisas = watch("cantidad");
   const [dia, setDia] = useState<String | null>(null);
   const notify = () => toast("📋​ Copiado ✔️");
- 
+
   const handleChange = () => {
     store.setToogleDolar();
   };
@@ -75,7 +85,7 @@ export default function Bcv() {
   }, [dataF]);
 
   const onSubmit = handleSubmit(async (data) => {
-    
+
   });
 
   useEffect(() => {
@@ -100,16 +110,16 @@ export default function Bcv() {
               ((parseFloat(cantidad_divisas.replace(",", ".")) *
                 Math.round(
                   (store.viewDolar ? dataF?.current.usd : dataF?.current.eur) *
-                    100,
+                  100,
                 )) /
                 100) *
-                100,
+              100,
             ) / 100,
           );
         } else {
           setCalculo(
             parseFloat(cantidad_divisas.replace(",", ".")) /
-              (store.viewDolar ? dataF?.current.usd : dataF?.current.eur),
+            (store.viewDolar ? dataF?.current.usd : dataF?.current.eur),
           );
         }
       }
@@ -133,22 +143,73 @@ export default function Bcv() {
   const Formatear_Moneda = (i: Number): string => {
     return store.OptionConvertion === "1"
       ? i
-          .toLocaleString("es-VE", {
-            style: "currency",
-            currency: "VES",
-          })
-          .replace(/Bs[\s\.]*S/, "Bs")
+        .toLocaleString("es-VE", {
+          style: "currency",
+          currency: "VES",
+        })
+        .replace(/Bs[\s\.]*S/, "Bs")
       : store.viewDolar
         ? i.toLocaleString("en-US", { style: "currency", currency: "USD" })
         : i.toLocaleString("en-IE", { style: "currency", currency: "EUR" });
   };
 
-  const shareWhatsapp = (monto: string):void => {
+  const shareWhatsapp = (monto: string): void => {
 
     const message = `Fecha: ${new Date().toLocaleDateString('es-VE')}
-${cantidad_divisas} ${store.OptionConvertion==='1' ? "$" : " Bs"} ${store.OptionConvertion === '1' ? "x​" : "/"} ${ store.viewDolar ? dataF?.current.usd.toFixed(2) + " Bs (BCV $)"  : dataF?.current.eur.toFixed(2) + " Bs (BCV €)"} 
+${cantidad_divisas} ${store.OptionConvertion === '1' ? "$" : " Bs"} ${store.OptionConvertion === '1' ? "x" : "/"} ${store.viewDolar ? dataF?.current.usd.toFixed(2) + " Bs (BCV $)" : dataF?.current.eur.toFixed(2) + " Bs (BCV €)"} 
 
 Total: ${monto}`
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+
+  }
+
+
+  const shareWhatsapp_pagoMovil = (monto: number): void => {
+
+    const hoy = new Date();
+    const fechaFormateada = hoy.toLocaleDateString('es-VE', {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit',
+    });
+
+    const Datos: PagoMovil_Types = JSON.parse(localStorage.getItem('PagoMovil')!)
+
+   
+
+     
+
+
+      const message = 
+`*Pago Móvil*
+
+*Fecha:* ${fechaFormateada}
+
+*Banco:* 
+${Datos ? Datos.Banco.label : ""}
+
+*Cédula/RIF:*
+${Datos ? Datos.Cedula : ""}
+
+*Teléfono:*
+${Datos ? Datos.Telefono : ""}
+
+*Monto exacto Bs:*
+${monto.toLocaleString('es-VE', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+
+    
+
+
+
+
+
+
+
+
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 
@@ -164,9 +225,9 @@ Total: ${monto}`
 
 
 
-    return (
+  return (
 
-        <div className="flex min-h-screen items-start justify-center bg-linear-to-b from-blue-950 via-blue-900 to-black">
+    <div className="flex min-h-screen items-start justify-center bg-linear-to-b from-blue-950 via-blue-900 to-black">
       {dataF && (
         <div className="flex flex-col items-center justify-center w-full">
           <Navbar />
@@ -294,13 +355,13 @@ Total: ${monto}`
                           <RiMoneyDollarBoxFill
                             size={55}
                             className="text-white"
-                            
+
                           />
                         ) : (
                           <RiMoneyEuroBoxFill
                             size={55}
                             className="text-white"
-                            
+
                           />
                         )
                       ) : (
@@ -324,25 +385,36 @@ Total: ${monto}`
 
               <div className="flex flex-col justify-center items-center mt-4 gap-6">
                 <div className="flex flex-wrap items-center justify-center">
-                <FaRegCopy className="text-white" />
-                <button
-                  className=" text-white rounded-xl px-2"
-                  onClick={() => {
-                    navigator.clipboard.writeText(Formatear_Moneda(calculo));
-                    notify();
-                  }}
-                >
-                  Copiar
-                </button>
+                  <FaRegCopy className="text-white" />
+                  <button
+                    className=" text-white rounded-xl px-2"
+                    onClick={() => {
+                      navigator.clipboard.writeText(Formatear_Moneda(calculo));
+                      notify();
+                    }}
+                  >
+                    Copiar
+                  </button>
                 </div>
-                <div 
-                className="bg-white py-1 flex flex-wrap justify-center items-center gap-2 rounded-xl px-4"
-                onClick={() => shareWhatsapp(Formatear_Moneda(calculo))}>
-                  {/*<FaShareAlt />*/} 
+                <div
+                  className="bg-white py-1 flex flex-wrap justify-center items-center gap-2 rounded-xl px-4"
+                  onClick={() => shareWhatsapp(Formatear_Moneda(calculo))}>
+                  {/*<FaShareAlt />*/}
                   <label className="text-black/90 font-bold"> Enviar... </label>
-                  <FaWhatsapp className="text-green-500" size={25}/>
+                  <FaWhatsapp className="text-green-500" size={25} />
 
                 </div>
+
+
+                <div
+                  className="bg-white py-1 flex flex-wrap justify-center items-center gap-2 rounded-xl px-4"
+                  onClick={() => shareWhatsapp_pagoMovil(calculo)}>
+                  {/*<FaShareAlt />*/}
+                  <label className="text-black/90 font-bold"> Pago Movil... </label>
+                  <FaWhatsapp className="text-green-500" size={25} />
+
+                </div>
+
               </div>
 
               <Toaster />
@@ -364,7 +436,7 @@ Total: ${monto}`
 
 
 
-    )
+  )
 
 
 }

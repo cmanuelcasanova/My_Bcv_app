@@ -6,6 +6,8 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import Switch from "react-switch";
 import { useStore } from "@/app/store/useSection"  ;
 import { SiBinance } from "react-icons/si";
+import PagoMovil from "./PagoMovil";
+
 
 export default function Navbar() {
 
@@ -160,22 +162,10 @@ export default function Navbar() {
             }
           ></Switch>
 
-          {/*
-          <div className="mb-6"> Datos Pago Movil: </div>
-      
+       
 
-          <div className="w-full inset-x-0 top-full gap-2 flex flex-col">  
-
-              <label htmlFor=""> Banco </label><input type="text" className="border-white"
-              />
-
-               <label htmlFor=""> Telefono </label><input type="text" className="border-white"
-              />
-             
-            
-          </div>
-
-          */}
+            <PagoMovil />
+          
         </div>
       )}
 

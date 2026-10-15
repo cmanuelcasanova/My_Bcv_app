@@ -1,0 +1,25 @@
+export const Bancos = [
+  { value: "0102", label: "0102 - Banco de Venezuela" },
+  { value: "0134", label: "0134 - Banesco" },
+  { value: "0104", label: "0104 - Venezolano de Crédito" },
+  { value: "0105", label: "0105 - Banco Mercantil" },
+  { value: "0108", label: "0108 - Provincial (BBVA)" },
+  { value: "0114", label: "0114 - Bancaribe" },
+  { value: "0115", label: "0115 - Exterior" },
+  { value: "0128", label: "0128 - Banco Caroní" },
+  { value: "0137", label: "0137 - Sofitasa" },
+  { value: "0138", label: "0138 - Banco Plaza" },
+  { value: "0151", label: "0151 - BFC Banco Fondo Común" },
+  { value: "0156", label: "0156 - 100% Banco" },
+  { value: "0157", label: "0157 - DelSur" },
+  { value: "0163", label: "0163 - Banco del Tesoro" },
+  { value: "0166", label: "0166 - Banco Agrícola de Venezuela" },
+  { value: "0168", label: "0168 - Bancrecer" },
+  { value: "0169", label: "0169 - Mi Banco" },
+  { value: "0172", label: "0172 - Bancamiga" },
+  { value: "0174", label: "0174 - Banplus" },
+  { value: "0175", label: "0175 - Bicentenario del Pueblo" },
+  { value: "0177", label: "0177 - Banfanb" },
+  { value: "0191", label: "0191 - BNC Banco Nacional de Crédito" }
+
+]
