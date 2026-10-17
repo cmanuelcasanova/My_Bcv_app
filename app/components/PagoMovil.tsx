@@ -3,6 +3,14 @@ import { Bancos } from '@/app/store/Cod_Bancos'
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from "react-hot-toast";
 
+interface Props {
+
+    onClosed: () => void,
+   
+
+
+}
+
 
 interface Bancos_Types {
 
@@ -21,7 +29,7 @@ interface PagoMovil_Types {
 }
 
 
-export default function PagoMovil() {
+export default function PagoMovil( { onClosed }: Props) {
 
 
 
@@ -42,7 +50,7 @@ export default function PagoMovil() {
         const PagoMovil = { Banco: opcionSeleccionada, Telefono: Telefono, Cedula: Cedula };
         localStorage.setItem('PagoMovil', JSON.stringify(PagoMovil));
         notify();
-
+        onClosed();
 
     }
 

@@ -23,6 +23,8 @@ import Navbar from "@/app/components/Navbar";
 import { FaWhatsapp } from "react-icons/fa";
 import { FaShareAlt } from "react-icons/fa";
 import { FaShare } from "react-icons/fa";
+import { ImQrcode } from "react-icons/im";
+import QrModal from "./qrModal";
 
 dayjs.extend(weekday);
 dayjs.extend(localizedFormat);
@@ -48,7 +50,9 @@ export default function Bcv() {
   const store = useStore((store) => store);
   const [dataF, setDataF] = useState<Api_Bcv | null>(null);
   const [Api_Response, setApiResponse] = useState<Number>();
+  const [viewQR, setViewQR] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
+  const [datosPagomovil, setDatosPagomovil] = useState<PagoMovil_Types | null>(null);
   const [calculo, setCalculo] = useState<number>(0);
   const { register, handleSubmit, watch, setValue } = useForm<FormData>();
   const cantidad_divisas = watch("cantidad");
@@ -76,6 +80,31 @@ export default function Bcv() {
 
     getData();
   }, []);
+
+
+
+  useEffect(() => {
+
+    const Datos: PagoMovil_Types = JSON.parse(localStorage.getItem('PagoMovil')!)
+
+    if (Datos) {
+
+      setDatosPagomovil({
+        Banco: {
+          value: Datos.Banco.value,
+          label: Datos.Banco.label
+        },
+        Telefono: Datos.Telefono,
+        Cedula: Datos.Cedula
+
+      })
+
+    }
+
+  }, [viewQR]);
+
+
+
 
   useEffect(() => {
     if (dataF) {
@@ -176,13 +205,13 @@ Total: ${monto}`
 
     const Datos: PagoMovil_Types = JSON.parse(localStorage.getItem('PagoMovil')!)
 
-   
-
-     
 
 
-      const message = 
-`*Pago Móvil*
+
+
+
+    const message =
+      `*Pago Móvil*
 
 *Fecha:* ${fechaFormateada}
 
@@ -197,11 +226,11 @@ ${Datos ? Datos.Telefono : ""}
 
 *Monto exacto Bs:*
 ${monto.toLocaleString('es-VE', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`;
 
-    
+
 
 
 
@@ -218,16 +247,22 @@ ${monto.toLocaleString('es-VE', {
 
 
 
+
   if (!dataF) return <LoadingModal color={"#0b1493"} size={"full"} />;
   if (error) return <Error />;
 
+  if (viewQR) return <QrModal onClosed={() => setViewQR(!viewQR)} message={`PAGO_MOVIL|${datosPagomovil?.Banco.value}|${datosPagomovil?.Telefono}|${datosPagomovil?.Cedula}|${calculo.toFixed(2)}`} />
+
+ // if (viewQR) return <QrModal onClosed={() => setViewQR(!viewQR)} message={`${datosPagomovil?.Banco.value}|${datosPagomovil?.Telefono}|${datosPagomovil?.Cedula}`} />
 
 
-
-
+  //PAGO_MOVIL|0134|04141234567|V12345678|1250.50
   return (
 
     <div className="flex min-h-screen items-start justify-center bg-linear-to-b from-blue-950 via-blue-900 to-black">
+
+
+
       {dataF && (
         <div className="flex flex-col items-center justify-center w-full">
           <Navbar />
@@ -414,6 +449,14 @@ ${monto.toLocaleString('es-VE', {
                   <FaWhatsapp className="text-green-500" size={25} />
 
                 </div>
+
+                {/*<div
+                  className="bg-white py-1 flex flex-wrap justify-center items-center rounded-xl p-2"
+                  onClick={() => { setViewQR(true) }}>
+                  <label className="text-black/90 font-bold"></label>
+                  <ImQrcode className="text-black" size={25} />
+
+                </div> */}
 
               </div>
 

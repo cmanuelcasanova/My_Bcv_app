@@ -164,7 +164,7 @@ export default function Navbar() {
 
        
 
-            <PagoMovil />
+            <PagoMovil onClosed={ ()=> { setMenu((prev) => !prev)   }  } />
           
         </div>
       )}
