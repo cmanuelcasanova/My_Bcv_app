@@ -9,6 +9,7 @@ import datalocal from "./data.json"
 //export const revalidate = 60;
 
 const isDev = process.env.NODE_ENV === 'development';
+//const isDev = false;
 
 const userAgents = [
   // --- MÓVILES (iOS) ---
@@ -92,12 +93,12 @@ try {
 
  
  
- 
+
 
   if( dolar && euro && fecha) {
     
      const myScrapt:Api_Bcv = {
-  current: { usd: Number(parseFloat(dolar.replace(',', '.')).toFixed(2)), eur: Number(parseFloat(euro.replace(',', '.')).toFixed(2)), date: fecha},
+  current: { usd: Number(parseFloat(dolar.replace( '.',''  ).replace(',', '.')).toFixed(2)), eur: Number(parseFloat(euro.replace( '.',''  ).replace(',', '.')).toFixed(2)), date: fecha},
   previous: { usd: 0, eur: 0, date: ''},
   changePercentage: { usd: 0, eur: 0 }}
 

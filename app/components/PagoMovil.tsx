@@ -87,7 +87,7 @@ export default function PagoMovil( { onClosed }: Props) {
     return (
 
 
-        <div className="my-6 bg-gray-800 w-full inset-x-0 top-full py-4 px-2 rounded-lg"> Datos Pago Movil:
+        <div className="my-6 bg-gray-800 sm:w-140 w-full inset-x-0 top-full py-4 px-2 rounded-lg"> Datos Pago Movil:
 
 
             <div className="gap-2 flex flex-col mt-4">
